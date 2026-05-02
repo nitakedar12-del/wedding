@@ -437,11 +437,10 @@ const flushPoints = useCallback(() => {
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 function Open() {
-  const sectionRef          = useRef(null);
-  const section3Ref         = useRef(null);
+ const section3Ref = useRef<HTMLDivElement | null>(null);
   const imageRef            = useRef(null);
   const section1SentinelRef = useRef(null);
-  const venueRef            = useRef(null);
+  const venueRef = useRef<HTMLDivElement | null>(null);
 
   const [open, setOpen]                         = useState(false);
   const [envelopeAnimDone, setEnvelopeAnimDone] = useState(false);
