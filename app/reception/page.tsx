@@ -243,16 +243,24 @@ const buildOverlay = useCallback(() => {
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
 
-  const getPoint = useCallback((e) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return null;
-    const rect = canvas.getBoundingClientRect();
-    const src = e.touches ? e.touches[0] : e;
-    return {
-      x: ((src.clientX - rect.left) / rect.width) * CW,
-      y: ((src.clientY - rect.top) / rect.height) * CH,
-    };
-  }, []);
+const getPoint = useCallback((
+  e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+) => {
+  const canvas = canvasRef.current;
+  if (!canvas) return null;
+
+  const rect = canvas.getBoundingClientRect();
+
+  const src =
+    "touches" in e
+      ? e.touches[0]
+      : e;
+
+  return {
+    x: ((src.clientX - rect.left) / rect.width) * CW,
+    y: ((src.clientY - rect.top) / rect.height) * CH,
+  };
+}, []);
 
   const interpolate = (a, b) => {
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
