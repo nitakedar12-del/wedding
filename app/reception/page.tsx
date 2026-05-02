@@ -551,21 +551,36 @@ function Open() {
       const rect = sectionRef.current.getBoundingClientRect();
       target = Math.max(0, Math.min((window.innerHeight - rect.top) / window.innerHeight, 1)) * 40;
     };
-    let raf;
-    const animate = () => {
-      if (isVis) {
-        current += (target - current) * 0.08;
-        if (imageRef.current) imageRef.current.style.transform = `translateY(${current}px)`;
-      }
-      raf = requestAnimationFrame(animate);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    animate();
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      cancelAnimationFrame(raf);
-      observer.disconnect();
-    };
+  //  let raf: number;
+  //   const animate = () => {
+  //     if (isVis) {
+  //       current += (target - current) * 0.08;
+  //       if (imageRef.current) imageRef.current.style.transform = `translateY(${current}px)`;
+  //     }
+  //     raf = requestAnimationFrame(animate);
+  //   };
+  //   window.addEventListener("scroll", handleScroll, { passive: true });
+  //   animate();
+  //   return () => {
+  //     window.removeEventListener("scroll", handleScroll);
+  //     cancelAnimationFrame(raf);
+  //     observer.disconnect();
+  //   };
+  let raf: number | null = null;
+
+const animate = () => {
+  if (isVis) {
+    current += (target - current) * 0.08;
+  }
+
+  raf = requestAnimationFrame(animate);
+};
+
+raf = requestAnimationFrame(animate);
+
+return () => {
+  if (raf !== null) cancelAnimationFrame(raf);
+};
   }, []);
 
   // ── AOS
