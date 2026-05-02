@@ -175,16 +175,24 @@ useEffect(() => {
 // ─────────────────────────────────────────────────────────────────────────────
 // SCRATCH CARD
 // ─────────────────────────────────────────────────────────────────────────────
-function ScratchCard({ weddingDate = "25/06/26", onFullReveal }) {
-  const canvasRef    = useRef(null);
-  const overlayRef   = useRef(null);
-  const isDrawing    = useRef(false);
-  const revealed     = useRef(false);
-  const hasTriggered = useRef(false);
-  const lastCheck    = useRef(0);
-  const pointsQueue  = useRef([]);
-  const rafPending   = useRef(false);
-  const lastPoint    = useRef(null);
+type ScratchCardProps = {
+  weddingDate?: string;
+  onFullReveal?: () => void;
+};
+
+function ScratchCard({
+  weddingDate = "25/06/26",
+  onFullReveal,
+}: ScratchCardProps) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+const overlayRef = useRef<HTMLCanvasElement | null>(null);
+const isDrawing = useRef(false);
+const revealed = useRef(false);
+const hasTriggered = useRef(false);
+const lastCheck = useRef(0);
+const pointsQueue = useRef<{ x: number; y: number }[]>([]);
+const rafPending = useRef(false);
+const lastPoint = useRef<{ x: number; y: number } | null>(null);
   const [showDate, setShowDate] = useState(false);
 
   const CW = 640, CH = 320;
