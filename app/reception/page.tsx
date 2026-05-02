@@ -613,7 +613,7 @@ return () => {
   // ── Section 3 scroll
   const section3Start    = section3Top;
   const section3Progress = Math.max(0, Math.min((scrollY - section3Start) / windowHeight, 1));
-  const getSection3Style = (index) => {
+  const getSection3Style = (index: number) => {
     if (scrollY < section3Start) return { transform: "translateY(0px)" };
     if (index === 0) return { transform: `translateY(${-section3Progress * windowHeight}px)`, willChange: "transform" };
     if (index === 1) return { transform: `translateY(${windowHeight - section3Progress * windowHeight}px)`, willChange: "transform" };
