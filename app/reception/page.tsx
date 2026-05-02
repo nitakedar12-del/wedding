@@ -311,7 +311,7 @@ const getPoint = useCallback((
     ctx.globalCompositeOperation = "source-over";
   }, []);
 
- const flushPoints = useCallback(() => {
+const flushPoints = useCallback(() => {
   rafPending.current = false;
 
   const canvas = canvasRef.current;
@@ -324,27 +324,53 @@ const getPoint = useCallback((
   if (!pts.length) return;
 
   pts.forEach((pt) => drawScratch(ctx, pt.x, pt.y));
-}, [drawScratch]);
-    const now = performance.now();
-    if (!hasTriggered.current && now - lastCheck.current > 400) {
-      lastCheck.current = now;
-      const data = ctx.getImageData(0, 0, CW, CH).data;
-      let transparent = 0, total = 0;
-      for (let i = 3; i < data.length; i += 32) { total++; if (data[i] < 128) transparent++; }
-      if (total > 0 && (transparent / total) * 100 > 55) {
-        hasTriggered.current = true; revealed.current = true;
-        let alpha = 1;
-        const wipe = () => {
-          alpha -= 0.055;
-          if (alpha <= 0) { ctx.clearRect(0, 0, CW, CH); setShowDate(true); onFullReveal?.(); return; }
-          ctx.clearRect(0, 0, CW, CH);
-          if (overlayRef.current) { ctx.globalAlpha = alpha; ctx.drawImage(overlayRef.current, 0, 0); ctx.globalAlpha = 1; }
-          requestAnimationFrame(wipe);
-        };
-        requestAnimationFrame(wipe);
-      }
+
+  const now = performance.now();
+
+  if (!hasTriggered.current && now - lastCheck.current > 400) {
+    lastCheck.current = now;
+
+    const data = ctx.getImageData(0, 0, CW, CH).data;
+
+    let transparent = 0;
+    let total = 0;
+
+    for (let i = 3; i < data.length; i += 32) {
+      total++;
+      if (data[i] < 128) transparent++;
     }
-  }, [drawScratch, onFullReveal]);
+
+    if (total > 0 && (transparent / total) * 100 > 55) {
+      hasTriggered.current = true;
+      revealed.current = true;
+
+      let alpha = 1;
+
+      const wipe = () => {
+        alpha -= 0.055;
+
+        if (alpha <= 0) {
+          ctx.clearRect(0, 0, CW, CH);
+          setShowDate(true);
+          onFullReveal?.();
+          return;
+        }
+
+        ctx.clearRect(0, 0, CW, CH);
+
+        if (overlayRef.current) {
+          ctx.globalAlpha = alpha;
+          ctx.drawImage(overlayRef.current, 0, 0);
+          ctx.globalAlpha = 1;
+        }
+
+        requestAnimationFrame(wipe);
+      };
+
+      requestAnimationFrame(wipe);
+    }
+  }
+}, [drawScratch, onFullReveal]);
 
   const onStart = useCallback((e) => {
     e.preventDefault(); isDrawing.current = true;
