@@ -263,7 +263,7 @@ const getPoint = useCallback((
   };
 }, []);
 
-  const interpolate = (a, b) => {
+  const interpolate = (a: Point, b: Point): Point[] => {
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
     const steps = Math.max(1, Math.ceil(dist / 3));
     return Array.from({ length: steps }, (_, i) => ({
