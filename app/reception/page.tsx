@@ -29,9 +29,9 @@ function preloadImage(src: string): Promise<void> {
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFETTI
 // ─────────────────────────────────────────────────────────────────────────────
-function ConfettiBurst({ active }) {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(null);
+function ConfettiBurst({ active }: { active: boolean })  {
+ const canvasRef = useRef<HTMLCanvasElement | null>(null);
+const rafRef = useRef<number | null>(null);
   const COLORS = ["#FFD700","#FF6B6B","#4ECDC4","#A78BFA","#F97316","#22D3EE","#EC4899","#84CC16","#FFF","#C9A96E"];
 
   useEffect(() => {
