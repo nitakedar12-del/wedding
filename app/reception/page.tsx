@@ -17,16 +17,15 @@ const ALL_ASSETS = [
   "/Yellow BG.svg", "/Car BG.svg", "/Car.svg", "/wedding-11.svg", "/final.svg",
 ];
 
-function preloadImage(src) {
+function preloadImage(src: string): Promise<void> {
   return new Promise((resolve) => {
     const img = new window.Image();
     img.src = src;
-    img.onload = resolve;
-    img.onerror = resolve;
-    setTimeout(resolve, 5000);
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    setTimeout(() => resolve(), 5000);
   });
 }
-
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFETTI
 // ─────────────────────────────────────────────────────────────────────────────
