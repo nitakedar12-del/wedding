@@ -624,7 +624,7 @@ return () => {
 const scrollClamped = Math.max(0, Math.min(scrollY - windowHeight * 3, windowHeight * 4));
 const activeIndex   = Math.floor(scrollClamped / windowHeight);
 const progressVal   = (scrollClamped % windowHeight) / windowHeight;
-const getStyle = (index) => {
+const getStyle = (index: number) => {
   if (index === activeIndex)     return { transform: `translateY(${-progressVal * windowHeight}px)`, willChange: "transform" };
   if (index === activeIndex + 1) return { transform: `translateY(${windowHeight - progressVal * windowHeight}px)`, willChange: "transform" };
   if (index < activeIndex)       return { transform: `translateY(${-windowHeight}px)` };
