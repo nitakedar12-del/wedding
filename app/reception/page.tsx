@@ -271,10 +271,15 @@ const getPoint = useCallback((
       y: a.y + (b.y - a.y) * ((i + 1) / steps),
     }));
   };
+ type Ctx = CanvasRenderingContext2D;
+  const drawScratch = useCallback((
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number
+) => {
+  ctx.globalCompositeOperation = "destination-out";
 
-  const drawScratch = useCallback((ctx, x, y) => {
-    ctx.globalCompositeOperation = "destination-out";
-    const rg = ctx.createRadialGradient(x, y, 0, x, y, 38);
+  const rg = ctx.createRadialGradient(x, y, 0, x, y, 38);
     rg.addColorStop(0, "rgba(0,0,0,1)");
     rg.addColorStop(0.5, "rgba(0,0,0,0.85)");
     rg.addColorStop(0.8, "rgba(0,0,0,0.4)");
