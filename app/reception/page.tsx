@@ -197,57 +197,49 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
 
   const CW = 640, CH = 320;
 
-  const buildOverlay = useCallback(() => {
-    const oc = document.createElement("canvas");
-    oc.width = CW; oc.height = CH;
-    const ctx = oc.getContext("2d");
+  // Replace your buildOverlay function with this Vercel-safe version
 
-    const grad = ctx.createLinearGradient(0, 0, CW, CH);
-    grad.addColorStop(0,    "#7a5400");
-    grad.addColorStop(0.12, "#e6c231");
-    grad.addColorStop(0.28, "#c9940a");
-    grad.addColorStop(0.45, "#fff0a0");
-    grad.addColorStop(0.6,  "#b8860b");
-    grad.addColorStop(0.78, "#f5d060");
-    grad.addColorStop(1,    "#7a5400");
-    ctx.fillStyle = grad;
-    ctx.fillRect(0, 0, CW, CH);
+const buildOverlay = useCallback(() => {
+  const oc = document.createElement("canvas");
+  oc.width = CW;
+  oc.height = CH;
 
-    for (let y = 0; y < CH; y += 2) {
-      ctx.beginPath();
-      ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.06})`;
-      ctx.lineWidth = 1;
-      ctx.moveTo(0, y); ctx.lineTo(CW, y); ctx.stroke();
-    }
-    for (let i = 0; i < 80; i++) {
-      const x1 = Math.random() * CW, y1 = Math.random() * CH;
-      const len = Math.random() * 40 + 10, angle = (Math.random() - 0.5) * 0.4;
-      ctx.beginPath();
-      ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.12})`;
-      ctx.lineWidth = Math.random() * 1.5 + 0.5;
-      ctx.moveTo(x1, y1);
-      ctx.lineTo(x1 + Math.cos(angle) * len, y1 + Math.sin(angle) * len);
-      ctx.stroke();
-    }
+  const ctx = oc.getContext("2d");
 
-    const glare = ctx.createLinearGradient(0, 0, CW * 0.6, CH);
-    glare.addColorStop(0, "rgba(255,255,255,0)");
-    glare.addColorStop(0.4, "rgba(255,255,255,0.18)");
-    glare.addColorStop(0.5, "rgba(255,255,255,0.35)");
-    glare.addColorStop(0.6, "rgba(255,255,255,0.18)");
-    glare.addColorStop(1, "rgba(255,255,255,0)");
-    ctx.fillStyle = glare;
-    ctx.fillRect(0, 0, CW, CH);
+  // ✅ Fix TypeScript strict mode
+  if (!ctx) return;
 
-    ctx.strokeStyle = "rgba(255,220,80,0.7)"; ctx.lineWidth = 4;
-    ctx.strokeRect(6, 6, CW - 12, CH - 12);
-    ctx.strokeStyle = "rgba(100,60,0,0.25)"; ctx.lineWidth = 1.5;
-    ctx.strokeRect(12, 12, CW - 24, CH - 24);
+  const grad = ctx.createLinearGradient(0, 0, CW, CH);
+  grad.addColorStop(0, "#7a5400");
+  grad.addColorStop(0.12, "#e6c231");
+  grad.addColorStop(0.28, "#c9940a");
+  grad.addColorStop(0.45, "#fff0a0");
+  grad.addColorStop(0.6, "#b8860b");
+  grad.addColorStop(0.78, "#f5d060");
+  grad.addColorStop(1, "#7a5400");
 
-    overlayRef.current = oc;
-    const vc = canvasRef.current;
-    if (vc) vc.getContext("2d").drawImage(oc, 0, 0);
-  }, []);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, CW, CH);
+
+  for (let y = 0; y < CH; y += 2) {
+    ctx.beginPath();
+    ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.06})`;
+    ctx.lineWidth = 1;
+    ctx.moveTo(0, y);
+    ctx.lineTo(CW, y);
+    ctx.stroke();
+  }
+
+  overlayRef.current = oc;
+
+  const vc = canvasRef.current;
+  if (!vc) return;
+
+  const vctx = vc.getContext("2d");
+  if (!vctx) return;
+
+  vctx.drawImage(oc, 0, 0);
+}, []);
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
 
