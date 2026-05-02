@@ -179,7 +179,7 @@ type ScratchCardProps = {
   weddingDate?: string;
   onFullReveal?: () => void;
 };
-
+type Point = { x: number; y: number };
 function ScratchCard({
   weddingDate = "25/06/26",
   onFullReveal,
@@ -190,9 +190,10 @@ const isDrawing = useRef(false);
 const revealed = useRef(false);
 const hasTriggered = useRef(false);
 const lastCheck = useRef(0);
-const pointsQueue = useRef<{ x: number; y: number }[]>([]);
+const pointsQueue = useRef<Point[]>([]);
+const lastPoint = useRef<Point | null>(null);
 const rafPending = useRef(false);
-const lastPoint = useRef<{ x: number; y: number } | null>(null);
+
   const [showDate, setShowDate] = useState(false);
 
   const CW = 640, CH = 320;
