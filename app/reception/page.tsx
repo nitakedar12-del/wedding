@@ -271,7 +271,7 @@ const getPoint = useCallback((
       y: a.y + (b.y - a.y) * ((i + 1) / steps),
     }));
   };
- type Ctx = CanvasRenderingContext2D;
+
   const drawScratch = useCallback((
   ctx: CanvasRenderingContext2D,
   x: number,
@@ -311,15 +311,20 @@ const getPoint = useCallback((
     ctx.globalCompositeOperation = "source-over";
   }, []);
 
-  const flushPoints = useCallback(() => {
-    rafPending.current = false;
-    const canvas = canvasRef.current;
-    if (!canvas || revealed.current) return;
-    const ctx = canvas.getContext("2d");
-    const pts = pointsQueue.current.splice(0);
-    if (!pts.length) return;
-    pts.forEach(pt => drawScratch(ctx, pt.x, pt.y));
+ const flushPoints = useCallback(() => {
+  rafPending.current = false;
 
+  const canvas = canvasRef.current;
+  if (!canvas || revealed.current) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const pts = pointsQueue.current.splice(0);
+  if (!pts.length) return;
+
+  pts.forEach((pt) => drawScratch(ctx, pt.x, pt.y));
+}, [drawScratch]);
     const now = performance.now();
     if (!hasTriggered.current && now - lastCheck.current > 400) {
       lastCheck.current = now;
