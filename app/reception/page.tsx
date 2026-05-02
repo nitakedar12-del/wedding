@@ -603,13 +603,12 @@ return () => {
     setTimeout(() => setConfettiActive(false), 3500);
   }, []);
 
-  const fadeUp = (delay) => ({
-    opacity: open ? 1 : 0,
-    transform: open ? "translateY(0px)" : "translateY(40px)",
-    transition: "opacity 1s ease, transform 1s ease",
-    transitionDelay: `${delay}s`,
-    willChange: "opacity, transform",
-  });
+  const fadeUp = (delay: number) => ({
+  opacity: open ? 1 : 0,
+  transform: open ? "translateY(0px)" : "translateY(40px)",
+  transition: "opacity 1s ease, transform 1s ease",
+  transitionDelay: `${delay}s`,
+});
 
   // ── Section 3 scroll
   const section3Start    = section3Top;
