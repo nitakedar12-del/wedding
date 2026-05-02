@@ -34,56 +34,139 @@ function ConfettiBurst({ active }: { active: boolean })  {
 const rafRef = useRef<number | null>(null);
   const COLORS = ["#FFD700","#FF6B6B","#4ECDC4","#A78BFA","#F97316","#22D3EE","#EC4899","#84CC16","#FFF","#C9A96E"];
 
-  useEffect(() => {
-    if (!active) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    const cx = canvas.width / 2;
-    const cy = canvas.height * 0.52;
+  // useEffect(() => {
+  //   if (!active) return;
+  //   const canvas = canvasRef.current;
+  //   if (!canvas) return;
+  //   const ctx = canvas.getContext("2d");
+  //   canvas.width = window.innerWidth;
+  //   canvas.height = window.innerHeight;
+  //   const cx = canvas.width / 2;
+  //   const cy = canvas.height * 0.52;
 
-    const particles = Array.from({ length: 140 }, () => ({
-      x: cx + (Math.random() - 0.5) * 60,
-      y: cy,
-      vx: (Math.random() - 0.5) * 20,
-      vy: -(Math.random() * 16 + 5),
-      color: COLORS[Math.floor(Math.random() * COLORS.length)],
-      w: Math.random() * 16 + 6,
-      h: Math.random() > 0.7 ? Math.random() * 16 + 6 : Math.random() * 8 + 3,
-      rot: Math.random() * 360,
-      rotSpeed: (Math.random() - 0.5) * 14,
-      gravity: 0.5,
-      life: 1,
-      decay: Math.random() * 0.013 + 0.007,
-      isCircle: Math.random() > 0.7,
-    }));
+  //   const particles = Array.from({ length: 140 }, () => ({
+  //     x: cx + (Math.random() - 0.5) * 60,
+  //     y: cy,
+  //     vx: (Math.random() - 0.5) * 20,
+  //     vy: -(Math.random() * 16 + 5),
+  //     color: COLORS[Math.floor(Math.random() * COLORS.length)],
+  //     w: Math.random() * 16 + 6,
+  //     h: Math.random() > 0.7 ? Math.random() * 16 + 6 : Math.random() * 8 + 3,
+  //     rot: Math.random() * 360,
+  //     rotSpeed: (Math.random() - 0.5) * 14,
+  //     gravity: 0.5,
+  //     life: 1,
+  //     decay: Math.random() * 0.013 + 0.007,
+  //     isCircle: Math.random() > 0.7,
+  //   }));
 
-    const tick = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      let alive = false;
-      for (const p of particles) {
-        if (p.life <= 0) continue;
-        alive = true;
-        p.x += p.vx; p.y += p.vy;
-        p.vy += p.gravity; p.vx *= 0.985;
-        p.rot += p.rotSpeed; p.life -= p.decay;
-        ctx.save();
-        ctx.globalAlpha = Math.max(0, p.life);
-        ctx.fillStyle = p.color;
-        ctx.translate(p.x, p.y);
-        ctx.rotate((p.rot * Math.PI) / 180);
-        if (p.isCircle) { ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2); ctx.fill(); }
-        else { ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
-        ctx.restore();
+  //   const tick = () => {
+  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //     let alive = false;
+  //     for (const p of particles) {
+  //       if (p.life <= 0) continue;
+  //       alive = true;
+  //       p.x += p.vx; p.y += p.vy;
+  //       p.vy += p.gravity; p.vx *= 0.985;
+  //       p.rot += p.rotSpeed; p.life -= p.decay;
+  //       ctx.save();
+  //       ctx.globalAlpha = Math.max(0, p.life);
+  //       ctx.fillStyle = p.color;
+  //       ctx.translate(p.x, p.y);
+  //       ctx.rotate((p.rot * Math.PI) / 180);
+  //       if (p.isCircle) { ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2); ctx.fill(); }
+  //       else { ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+  //       ctx.restore();
+  //     }
+  //     if (alive) rafRef.current = requestAnimationFrame(tick);
+  //   };
+  //   rafRef.current = requestAnimationFrame(tick);
+  //   return () => cancelAnimationFrame(rafRef.current);
+  // }, [active]);
+
+
+
+
+  // Fix this block inside ConfettiBurst useEffect
+
+useEffect(() => {
+  if (!active) return;
+
+  const canvas = canvasRef.current;
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+
+  // ✅ Fix for Vercel / TypeScript production build
+  if (!ctx) return;
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const cx = canvas.width / 2;
+  const cy = canvas.height * 0.52;
+
+  const particles = Array.from({ length: 140 }, () => ({
+    x: cx + (Math.random() - 0.5) * 60,
+    y: cy,
+    vx: (Math.random() - 0.5) * 20,
+    vy: -(Math.random() * 16 + 5),
+    color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    w: Math.random() * 16 + 6,
+    h: Math.random() > 0.7 ? Math.random() * 16 + 6 : Math.random() * 8 + 3,
+    rot: Math.random() * 360,
+    rotSpeed: (Math.random() - 0.5) * 14,
+    gravity: 0.5,
+    life: 1,
+    decay: Math.random() * 0.013 + 0.007,
+    isCircle: Math.random() > 0.7,
+  }));
+
+  const tick = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let alive = false;
+
+    for (const p of particles) {
+      if (p.life <= 0) continue;
+
+      alive = true;
+
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += p.gravity;
+      p.vx *= 0.985;
+      p.rot += p.rotSpeed;
+      p.life -= p.decay;
+
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, p.life);
+      ctx.fillStyle = p.color;
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rot * Math.PI) / 180);
+
+      if (p.isCircle) {
+        ctx.beginPath();
+        ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
       }
-      if (alive) rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [active]);
 
+      ctx.restore();
+    }
+
+    if (alive) {
+      rafRef.current = requestAnimationFrame(tick);
+    }
+  };
+
+  rafRef.current = requestAnimationFrame(tick);
+
+  return () => {
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+  };
+}, [active]);
   return (
     <canvas ref={canvasRef} style={{ position:"fixed", inset:0, pointerEvents:"none", zIndex:9999, display: active ? "block" : "none" }} />
   );
