@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import RSVPForm from "./form";
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ASSET MANIFEST
