@@ -372,12 +372,19 @@ const flushPoints = useCallback(() => {
   }
 }, [drawScratch, onFullReveal]);
 
-  const onStart = useCallback((e) => {
-    e.preventDefault(); isDrawing.current = true;
-    const pt = getPoint(e); if (pt) lastPoint.current = pt;
-  }, [getPoint]);
+  const onStart = useCallback(
+  (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+    e.preventDefault();
+    isDrawing.current = true;
 
-  const onMove = useCallback((e) => {
+    const pt = getPoint(e);
+    if (pt) lastPoint.current = pt;
+  },
+  [getPoint]
+);
+
+  const onMove = useCallback(
+  (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     if (!isDrawing.current || revealed.current) return;
     e.preventDefault();
     const pt = getPoint(e); if (!pt) return;
