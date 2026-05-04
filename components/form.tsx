@@ -163,7 +163,7 @@ export default function RSVPForm() {
         />
 
         {/* ── RSVP heading — inside arch, above white area ── */}
-        <div style={{ ...abs("21.5%"), textAlign: "center" }}>
+        <div style={{ ...abs("24.5%"), textAlign: "center" }}>
           <h1 style={{
             fontFamily: alexFont,
             fontSize: "clamp(32px, 6vw, 50px)",
@@ -262,10 +262,10 @@ export default function RSVPForm() {
         </div>
 
         {/* ── Privacy note — 66.69% ── */}
-        <div style={{ ...abs("56.69%"), textAlign: "center" }}>
+        <div style={{ ...abs("57.69%"), textAlign: "center" }}>
           <p style={{
             margin: 0,
-            fontSize: "clamp(8.5px, 1vw, 10.5px)",
+            fontSize: "clamp(7.5px, 1vw, 10.5px)",
             color: "#7a4a10",
             fontStyle: "italic",
             lineHeight: 1.35,
