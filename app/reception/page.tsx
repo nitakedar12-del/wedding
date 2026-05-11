@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/refs, react-hooks/purity, react-hooks/set-state-in-effect */
 "use client";
 import { useEffect, useRef, useState, useCallback } from "react";
+// import React, { useEffect, useRef, useState, useCallback } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 // import RSVPForm from "./form";
@@ -29,9 +30,9 @@ function preloadImage(src: string): Promise<void> {
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFETTI
 // ─────────────────────────────────────────────────────────────────────────────
-function ConfettiBurst({ active }) {
-  const canvasRef = useRef(null);
-  const rafRef = useRef(null);
+function ConfettiBurst({ active }: { active: boolean }) {
+ const canvasRef = useRef<HTMLCanvasElement | null>(null);
+const rafRef = useRef<number | null>(null);
   const COLORS = ["#FFD700","#FF6B6B","#4ECDC4","#A78BFA","#F97316","#22D3EE","#EC4899","#84CC16","#FFF","#C9A96E"];
 
   useEffect(() => {
@@ -92,16 +93,27 @@ function ConfettiBurst({ active }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // SCRATCH CARD
 // ─────────────────────────────────────────────────────────────────────────────
-function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
-  const canvasRef    = useRef(null);
-  const overlayRef   = useRef(null);
+function ScratchCard({
+  weddingDate = "23/06/26",
+  onFullReveal,
+}: {
+  weddingDate?: string;
+  onFullReveal?: () => void;
+}) {
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+const overlayRef = useRef<HTMLCanvasElement | null>(null);
+
+const pointsQueue = useRef<{ x: number; y: number }[]>([]);
+
+const lastPoint = useRef<{ x: number; y: number } | null>(null);
+  
   const isDrawing    = useRef(false);
   const revealed     = useRef(false);
   const hasTriggered = useRef(false);
   const lastCheck    = useRef(0);
-  const pointsQueue  = useRef([]);
+ 
   const rafPending   = useRef(false);
-  const lastPoint    = useRef(null);
+
   const [showDate, setShowDate] = useState(false);
 
   const CW = 640, CH = 320;
@@ -160,7 +172,8 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
 
-  const getPoint = useCallback((e) => {
+ const getPoint = useCallback(
+  (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
@@ -302,11 +315,11 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 function Open() {
-  const sectionRef          = useRef(null);
-  const section3Ref         = useRef(null);
-  const imageRef            = useRef(null);
-  const section1SentinelRef = useRef(null);
-  const venueRef            = useRef(null);
+const sectionRef = useRef<HTMLDivElement | null>(null);
+const section3Ref = useRef<HTMLDivElement | null>(null);
+const imageRef = useRef<HTMLImageElement | null>(null);
+const section1SentinelRef = useRef<HTMLDivElement | null>(null);
+const venueRef = useRef<HTMLDivElement | null>(null);
 
   const [open, setOpen]                         = useState(false);
   const [envelopeAnimDone, setEnvelopeAnimDone] = useState(false);
