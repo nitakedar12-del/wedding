@@ -93,33 +93,35 @@ function ConfettiBurst({ active }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // SCRATCH CARD
 // ─────────────────────────────────────────────────────────────────────────────
-function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
-  const canvasRef    = useRef(null);
-  const overlayRef   = useRef(null);
-  const isDrawing    = useRef(false);
-  const revealed     = useRef(false);
-  const hasTriggered = useRef(false);
-  const lastCheck    = useRef(0);
-  const pointsQueue  = useRef([]);
-  const rafPending   = useRef(false);
-  const lastPoint    = useRef(null);
-  const [showDate, setShowDate] = useState(false);
+// import { useRef, useState, useCallback, useEffect } from "react";
 
+function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
+  const canvasRef = useRef(null);
+  const overlayRef = useRef(null);
+  const pointsQueue = useRef([]);
+  const lastPoint = useRef(null);
+  const isDrawing = useRef(false);
+  const revealed = useRef(false);
+  const hasTriggered = useRef(false);
+  const lastCheck = useRef(0);
+  const rafPending = useRef(false);
+  const [showDate, setShowDate] = useState(false);
   const CW = 640, CH = 320;
 
   const buildOverlay = useCallback(() => {
     const oc = document.createElement("canvas");
     oc.width = CW; oc.height = CH;
     const ctx = oc.getContext("2d");
+    if (!ctx) return;
 
     const grad = ctx.createLinearGradient(0, 0, CW, CH);
-    grad.addColorStop(0,    "#7a5400");
+    grad.addColorStop(0, "#7a5400");
     grad.addColorStop(0.12, "#e6c231");
     grad.addColorStop(0.28, "#c9940a");
     grad.addColorStop(0.45, "#fff0a0");
-    grad.addColorStop(0.6,  "#b8860b");
+    grad.addColorStop(0.6, "#b8860b");
     grad.addColorStop(0.78, "#f5d060");
-    grad.addColorStop(1,    "#7a5400");
+    grad.addColorStop(1, "#7a5400");
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CW, CH);
 
@@ -156,7 +158,10 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
 
     overlayRef.current = oc;
     const vc = canvasRef.current;
-    if (vc) vc.getContext("2d").drawImage(oc, 0, 0);
+    if (vc) {
+      const vctx = vc.getContext("2d");
+      if (vctx) vctx.drawImage(oc, 0, 0);
+    }
   }, []);
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
@@ -165,10 +170,17 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
     const canvas = canvasRef.current;
     if (!canvas) return null;
     const rect = canvas.getBoundingClientRect();
-    const src = e.touches ? e.touches[0] : e;
+    let clientX, clientY;
+    if ("touches" in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
     return {
-      x: ((src.clientX - rect.left) / rect.width) * CW,
-      y: ((src.clientY - rect.top) / rect.height) * CH,
+      x: ((clientX - rect.left) / rect.width) * CW,
+      y: ((clientY - rect.top) / rect.height) * CH,
     };
   }, []);
 
@@ -220,6 +232,7 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
     const canvas = canvasRef.current;
     if (!canvas || revealed.current) return;
     const ctx = canvas.getContext("2d");
+    if (!ctx) return;
     const pts = pointsQueue.current.splice(0);
     if (!pts.length) return;
     pts.forEach(pt => drawScratch(ctx, pt.x, pt.y));
@@ -263,33 +276,32 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
   const onEnd = useCallback(() => { isDrawing.current = false; lastPoint.current = null; }, []);
 
   return (
-    <div style={{ position:"relative", width:"92%", maxWidth:380, margin:"0 auto", userSelect:"none", WebkitUserSelect:"none" }}>
-      <div style={{ position:"absolute", inset:0, display:"flex", alignItems:"center", justifyContent:"center", zIndex:1, pointerEvents:"none" }}>
-        <img src="/AK Invite Website.svg.svg" className="absolute  w-[220px] object-contain top-[-150px]" alt="" />
+    <div style={{ position: "relative", width: "92%", maxWidth: 380, margin: "0 auto", userSelect: "none", WebkitUserSelect: "none" }}>
+      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, pointerEvents: "none" }}>
+        <img src="/AK Invite Website.svg.svg" style={{ position: "absolute", width: 141, objectFit: "contain", top: -106 }} alt="" />
         <span style={{
-          fontFamily:"'Georgia','Times New Roman',serif",
-          fontSize:"clamp(1.8rem,5.5vw,3rem)",
-          fontWeight:700, position:"absolute", top:"25px",
-          color:"#f4ead9", letterSpacing:"0.15em",
-          textShadow:"0 2px 16px rgba(0,0,0,0.6)",
-         
+          fontFamily: "'Georgia','Times New Roman',serif",
+          fontSize: "clamp(1.2rem,5.5vw,1.2rem)",
+          fontWeight: 700, position: "absolute", top: "3px",
+          color: "#f4ead9", letterSpacing: "0.15em",
+          textShadow: "0 2px 16px rgba(0,0,0,0.6)",
           transform: showDate ? "scale(1) translateY(0)" : "scale(0.75) translateY(10px)",
-          transition:"opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.56,0.64,1)",
+          transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.56,0.64,1)",
         }}>
           {weddingDate}
         </span>
       </div>
-      <div style={{ display:"flex", justifyContent:"center", alignItems:"center" }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
         <canvas
           ref={canvasRef} width={CW} height={CH}
           style={{
-            display:"block", width:"80%", height:"68px",
-            position:"relative", top:"17px", zIndex:2,
-            borderRadius:14, touchAction:"none",
+            display: "block", width: "80%", height: "48px",
+            position: "relative", top: "-3px", zIndex: 2,
+            borderRadius: 14, touchAction: "none",
             cursor: showDate ? "default" : "crosshair",
             opacity: showDate ? 0 : 1,
-            transition:"opacity 0.4s ease", willChange:"opacity",
-            boxShadow: showDate ? "none" : "0 8px 32px rgba(0,0,0,0.45),0 2px 8px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,220,80,0.3)",
+            transition: "opacity 0.4s ease", willChange: "opacity",
+            boxShadow: showDate ? "none" : "0 8px 32px rgba(0,0,0,0.14),0 2px 8px rgba(0,0,0,0.18),inset 0 1px 0 rgba(255,220,80,0.3)",
           }}
           onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
           onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd} onTouchCancel={onEnd}
@@ -298,6 +310,228 @@ function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
     </div>
   );
 }
+
+function ScratchCard2({ weddingDate = "25/06/26", onFullReveal }) {
+  const canvasRef = useRef(null);
+  const overlayRef = useRef(null);
+  const pointsQueue = useRef([]);
+  const lastPoint = useRef(null);
+  const isDrawing = useRef(false);
+  const revealed = useRef(false);
+  const hasTriggered = useRef(false);
+  const lastCheck = useRef(0);
+  const rafPending = useRef(false);
+  const [showDate, setShowDate] = useState(false);
+  const CW = 640, CH = 320;
+
+  const buildOverlay = useCallback(() => {
+    const oc = document.createElement("canvas");
+    oc.width = CW; oc.height = CH;
+    const ctx = oc.getContext("2d");
+    if (!ctx) return;
+
+    const grad = ctx.createLinearGradient(0, 0, CW, CH);
+    grad.addColorStop(0, "#7a5400");
+    grad.addColorStop(0.12, "#e6c231");
+    grad.addColorStop(0.28, "#c9940a");
+    grad.addColorStop(0.45, "#fff0a0");
+    grad.addColorStop(0.6, "#b8860b");
+    grad.addColorStop(0.78, "#f5d060");
+    grad.addColorStop(1, "#7a5400");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, CW, CH);
+
+    for (let y = 0; y < CH; y += 2) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.06})`;
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, y); ctx.lineTo(CW, y); ctx.stroke();
+    }
+    for (let i = 0; i < 80; i++) {
+      const x1 = Math.random() * CW, y1 = Math.random() * CH;
+      const len = Math.random() * 40 + 10, angle = (Math.random() - 0.5) * 0.4;
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.12})`;
+      ctx.lineWidth = Math.random() * 1.5 + 0.5;
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x1 + Math.cos(angle) * len, y1 + Math.sin(angle) * len);
+      ctx.stroke();
+    }
+
+    const glare = ctx.createLinearGradient(0, 0, CW * 0.6, CH);
+    glare.addColorStop(0, "rgba(255,255,255,0)");
+    glare.addColorStop(0.4, "rgba(255,255,255,0.18)");
+    glare.addColorStop(0.5, "rgba(255,255,255,0.35)");
+    glare.addColorStop(0.6, "rgba(255,255,255,0.18)");
+    glare.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = glare;
+    ctx.fillRect(0, 0, CW, CH);
+
+    ctx.strokeStyle = "rgba(255,220,80,0.7)"; ctx.lineWidth = 4;
+    ctx.strokeRect(6, 6, CW - 12, CH - 12);
+    ctx.strokeStyle = "rgba(100,60,0,0.25)"; ctx.lineWidth = 1.5;
+    ctx.strokeRect(12, 12, CW - 24, CH - 24);
+
+    overlayRef.current = oc;
+    const vc = canvasRef.current;
+    if (vc) {
+      const vctx = vc.getContext("2d");
+      if (vctx) vctx.drawImage(oc, 0, 0);
+    }
+  }, []);
+
+  useEffect(() => { buildOverlay(); }, [buildOverlay]);
+
+  const getPoint = useCallback((e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    let clientX, clientY;
+    if ("touches" in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+    return {
+      x: ((clientX - rect.left) / rect.width) * CW,
+      y: ((clientY - rect.top) / rect.height) * CH,
+    };
+  }, []);
+
+  const interpolate = (a, b) => {
+    const dist = Math.hypot(b.x - a.x, b.y - a.y);
+    const steps = Math.max(1, Math.ceil(dist / 3));
+    return Array.from({ length: steps }, (_, i) => ({
+      x: a.x + (b.x - a.x) * ((i + 1) / steps),
+      y: a.y + (b.y - a.y) * ((i + 1) / steps),
+    }));
+  };
+
+  const drawScratch = useCallback((ctx, x, y) => {
+    ctx.globalCompositeOperation = "destination-out";
+    const rg = ctx.createRadialGradient(x, y, 0, x, y, 38);
+    rg.addColorStop(0, "rgba(0,0,0,1)");
+    rg.addColorStop(0.5, "rgba(0,0,0,0.85)");
+    rg.addColorStop(0.8, "rgba(0,0,0,0.4)");
+    rg.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = rg;
+    ctx.beginPath(); ctx.arc(x, y, 38, 0, Math.PI * 2); ctx.fill();
+
+    for (let i = 0; i < 7; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const length = Math.random() * 28 + 12;
+      const x2 = x + Math.cos(angle) * length + (Math.random() - 0.5) * 10;
+      const y2 = y + Math.sin(angle) * length + (Math.random() - 0.5) * 10;
+      const lg = ctx.createLinearGradient(x, y, x2, y2);
+      lg.addColorStop(0, "rgba(0,0,0,0.9)"); lg.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.strokeStyle = lg; ctx.lineWidth = Math.random() * 6 + 3; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.moveTo(x, y);
+      ctx.quadraticCurveTo(
+        x + (x2 - x) * 0.5 + (Math.random() - 0.5) * 12,
+        y + (y2 - y) * 0.5 + (Math.random() - 0.5) * 12,
+        x2, y2
+      );
+      ctx.stroke();
+    }
+    for (let i = 0; i < 5; i++) {
+      ctx.beginPath();
+      ctx.arc(x + (Math.random() - 0.5) * 60, y + (Math.random() - 0.5) * 60, Math.random() * 5 + 2, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(0,0,0,${Math.random() * 0.6 + 0.3})`; ctx.fill();
+    }
+    ctx.globalCompositeOperation = "source-over";
+  }, []);
+
+  const flushPoints = useCallback(() => {
+    rafPending.current = false;
+    const canvas = canvasRef.current;
+    if (!canvas || revealed.current) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const pts = pointsQueue.current.splice(0);
+    if (!pts.length) return;
+    pts.forEach(pt => drawScratch(ctx, pt.x, pt.y));
+
+    const now = performance.now();
+    if (!hasTriggered.current && now - lastCheck.current > 400) {
+      lastCheck.current = now;
+      const data = ctx.getImageData(0, 0, CW, CH).data;
+      let transparent = 0, total = 0;
+      for (let i = 3; i < data.length; i += 32) { total++; if (data[i] < 128) transparent++; }
+      if (total > 0 && (transparent / total) * 100 > 55) {
+        hasTriggered.current = true; revealed.current = true;
+        let alpha = 1;
+        const wipe = () => {
+          alpha -= 0.055;
+          if (alpha <= 0) { ctx.clearRect(0, 0, CW, CH); setShowDate(true); onFullReveal?.(); return; }
+          ctx.clearRect(0, 0, CW, CH);
+          if (overlayRef.current) { ctx.globalAlpha = alpha; ctx.drawImage(overlayRef.current, 0, 0); ctx.globalAlpha = 1; }
+          requestAnimationFrame(wipe);
+        };
+        requestAnimationFrame(wipe);
+      }
+    }
+  }, [drawScratch, onFullReveal]);
+
+  const onStart = useCallback((e) => {
+    e.preventDefault(); isDrawing.current = true;
+    const pt = getPoint(e); if (pt) lastPoint.current = pt;
+  }, [getPoint]);
+
+  const onMove = useCallback((e) => {
+    if (!isDrawing.current || revealed.current) return;
+    e.preventDefault();
+    const pt = getPoint(e); if (!pt) return;
+    if (lastPoint.current) pointsQueue.current.push(...interpolate(lastPoint.current, pt));
+    else pointsQueue.current.push(pt);
+    lastPoint.current = pt;
+    if (!rafPending.current) { rafPending.current = true; requestAnimationFrame(flushPoints); }
+  }, [getPoint, flushPoints]);
+
+  const onEnd = useCallback(() => { isDrawing.current = false; lastPoint.current = null; }, []);
+
+  return (
+    <div style={{ position: "relative", width: "92%", maxWidth: 380, margin: "0 auto", userSelect: "none", WebkitUserSelect: "none" }}>
+      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", zIndex: 1, pointerEvents: "none" }}>
+        <img src="/AK Invite Website.svg.svg" style={{ position: "absolute", width: 141, objectFit: "contain", top: -106 }} alt="" />
+        <span style={{
+          fontFamily: "'Georgia','Times New Roman',serif",
+          fontSize: "clamp(1.2rem,5.5vw,1.2rem)",
+          fontWeight: 700, position: "absolute", top: "3px",
+          color: "#f4ead9", letterSpacing: "0.15em",
+          textShadow: "0 2px 16px rgba(0,0,0,0.6)",
+          transform: showDate ? "scale(1) translateY(0)" : "scale(0.75) translateY(10px)",
+          transition: "opacity 0.7s ease, transform 0.7s cubic-bezier(0.34,1.56,0.64,1)",
+        }}>
+          {weddingDate}
+        </span>
+      </div>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <canvas
+          ref={canvasRef} width={CW} height={CH}
+          style={{
+            display: "block", width: "80%", height: "48px",
+            position: "relative", top: "-6px", zIndex: 2,
+            borderRadius: 14, touchAction: "none",
+            cursor: showDate ? "default" : "crosshair",
+            opacity: showDate ? 0 : 1,
+            transition: "opacity 0.4s ease", willChange: "opacity",
+            boxShadow: showDate ? "none" : "0 8px 32px rgba(0,0,0,0.16),0 2px 8px rgba(0,0,0,0.25),inset 0 1px 0 rgba(255,220,80,0.3)",
+          }}
+          onMouseDown={onStart} onMouseMove={onMove} onMouseUp={onEnd} onMouseLeave={onEnd}
+          onTouchStart={onStart} onTouchMove={onMove} onTouchEnd={onEnd} onTouchCancel={onEnd}
+        />
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // MAIN COMPONENT
@@ -596,7 +830,7 @@ if (scrollY >= venueTop) {
 
         /* ── Scratch ── */
         .scratch-overlay {
-          position: absolute; top: 50%; left: 50%;
+          position: absolute; top: 55%; left: 50%;
           transform: translate(-50%,-50%);
           width: 100%; z-index: 20;
           display: flex; flex-direction: column;
@@ -906,6 +1140,8 @@ if (scrollY >= venueTop) {
                   <p className="scratch-title " style={{ fontFamily: "'Alex Brush', cursive" }}>Reveal</p>
                   <p className="scratch-subtitle">Scratch to discover<br />the wedding date</p>
                   <ScratchCard weddingDate="23/06/26" onFullReveal={handleScratchReveal} />
+                   <p className="scratch-subtitle">Scratch to discover<br />Reception date</p>
+                  <ScratchCard2 weddingDate="25/06/26" onFullReveal={handleScratchReveal} />
                 </div>
               </div>
             </div>
@@ -931,61 +1167,68 @@ if (scrollY >= venueTop) {
                   className="absolute h-[526px] w-full object-contain top-[-172px]"
                   style={{ zIndex: 9 }} alt="" /> */}
 
-                {[
+               {[
                   {
                     img: "/Window.png",
                     node: (
                       <div className="max-w-[300px] w-full text-center z-10 mt-[18px]">
                         <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
+                        <img src="/Devider 1.svg" className="w-full  " />
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>20/06/26</p>
-                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Haldi & <br/> Ganesh Pooja</h2>
-                        
+                         
+                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Haldi & <br /> Ganesh Pooja</h2>
+
                         <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>12 pm</p>
+                         <img src="/Devider 1.svg" className="w-full  " />
                         {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gota/Leheriya</p> */}
-                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mehendi & <br/> Jamming Baithak</h2>
-                        <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>4.30 pm Onward</p>
-                        <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: Home</p>
+                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mehendi & <br /> Jamming Baithak</h2>
+                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>4.30 pm onward</p>
+                         <img src="/Devider 1.svg" className="w-full  " />
+                        <p className="text-[16px] text-[#3B2507] " style={{ fontFamily: "'Alice', serif" }}>Venue: Home</p>
                       </div>
                     ),
                   },
                   {
                     img: "/Window.png",
                     node: (
-                      <div className="max-w-[300px] w-full text-center z-10 mt-[18px] " style={{lineHeight:"24px"}}>
-                       <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Bhilwara</p>
+                      <div className="max-w-[300px] w-full text-center z-10 mt-[18px] " style={{ lineHeight: "24px" }}>
+                        <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Bhilwara</p>
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>22/06/26</p>
                         <h2 className="text-[35px] font-medium text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Sangeet</h2>
-                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>7 pm Onward</p>
-                         {/* <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p> */}
+                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>7 pm Onward</p>
+                        {/* <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p> */}
                         {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Indo-Western</p> */}
                         <img src="/Devider 1.svg" className="w-full  p-4" />
-                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>23/06/26</p>
+                        <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>23/06/26</p>
                         <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
-  Barat <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>8 am</span>
-</span><br />
-<span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
-  Pheras <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am</span>
-</span><br />
-{/* <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
+                          Barat <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>8 am</span>
+                        </span><br />
+                        <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
+                          Pheras <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am</span>
+                        </span><br />
+                        {/* <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
   Reception <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</span>
 </span> */}
-                          <p className="text-[11px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: The Aaureum Resorts,<br/> Bhilwara, Rajasthan</p>
+                        <p className="text-[13px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: The Aaureum Resorts,<br /> Bhilwara, Rajasthan</p>
                       </div>
                     ),
                   },
                   {
                     img: "/Window.png",
                     node: (
-                     <div className="max-w-[300px] w-full text-center z-10 mt-[18px]"style={{lineHeight:"27px"}}>
+                      <div className="max-w-[300px] w-full text-center z-10 mt-[18px]" style={{ lineHeight: "27px" }}>
                         <p className="text-[25px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
+                        <img src="/Devider 1.svg" className="w-full  " />
                         {/* <p className="text-[17px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>(Post-Wedding)</p> */}
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>25/06/26</p>
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Myra</h2>
-                        
+
                         <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am- 1pm</p>
+                        <img src="/Devider 1.svg" className="w-full  " />
                         {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gujrati vibe</p> */}
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Reception</h2>
-                        <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>7.30 pm Onward</p>
+                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>7.30 pm Onward</p>
+                        <img src="/Devider 1.svg" className="w-full  " />
                         <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@Hotel Center Point, <br></br>Ramdaspeth, Nagpur</p>
                       </div>
                     ),
