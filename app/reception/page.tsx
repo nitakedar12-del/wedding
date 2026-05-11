@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-
+// import RSVPForm from "./form";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ASSET MANIFEST
@@ -17,156 +17,74 @@ const ALL_ASSETS = [
   "/Yellow BG.svg", "/Car BG.svg", "/Car.svg", "/wedding-11.svg", "/final.svg",
 ];
 
-function preloadImage(src: string): Promise<void> {
+function preloadImage(src) {
   return new Promise((resolve) => {
     const img = new window.Image();
     img.src = src;
-    img.onload = () => resolve();
-    img.onerror = () => resolve();
-    setTimeout(() => resolve(), 5000);
+    img.onload = resolve;
+    img.onerror = resolve;
+    setTimeout(resolve, 5000);
   });
 }
+
 // ─────────────────────────────────────────────────────────────────────────────
 // CONFETTI
 // ─────────────────────────────────────────────────────────────────────────────
-function ConfettiBurst({ active }: { active: boolean })  {
- const canvasRef = useRef<HTMLCanvasElement | null>(null);
-const rafRef = useRef<number | null>(null);
+function ConfettiBurst({ active }) {
+  const canvasRef = useRef(null);
+  const rafRef = useRef(null);
   const COLORS = ["#FFD700","#FF6B6B","#4ECDC4","#A78BFA","#F97316","#22D3EE","#EC4899","#84CC16","#FFF","#C9A96E"];
 
-  // useEffect(() => {
-  //   if (!active) return;
-  //   const canvas = canvasRef.current;
-  //   if (!canvas) return;
-  //   const ctx = canvas.getContext("2d");
-  //   canvas.width = window.innerWidth;
-  //   canvas.height = window.innerHeight;
-  //   const cx = canvas.width / 2;
-  //   const cy = canvas.height * 0.52;
+  useEffect(() => {
+    if (!active) return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.52;
 
-  //   const particles = Array.from({ length: 140 }, () => ({
-  //     x: cx + (Math.random() - 0.5) * 60,
-  //     y: cy,
-  //     vx: (Math.random() - 0.5) * 20,
-  //     vy: -(Math.random() * 16 + 5),
-  //     color: COLORS[Math.floor(Math.random() * COLORS.length)],
-  //     w: Math.random() * 16 + 6,
-  //     h: Math.random() > 0.7 ? Math.random() * 16 + 6 : Math.random() * 8 + 3,
-  //     rot: Math.random() * 360,
-  //     rotSpeed: (Math.random() - 0.5) * 14,
-  //     gravity: 0.5,
-  //     life: 1,
-  //     decay: Math.random() * 0.013 + 0.007,
-  //     isCircle: Math.random() > 0.7,
-  //   }));
+    const particles = Array.from({ length: 140 }, () => ({
+      x: cx + (Math.random() - 0.5) * 60,
+      y: cy,
+      vx: (Math.random() - 0.5) * 20,
+      vy: -(Math.random() * 16 + 5),
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+      w: Math.random() * 16 + 6,
+      h: Math.random() > 0.7 ? Math.random() * 16 + 6 : Math.random() * 8 + 3,
+      rot: Math.random() * 360,
+      rotSpeed: (Math.random() - 0.5) * 14,
+      gravity: 0.5,
+      life: 1,
+      decay: Math.random() * 0.013 + 0.007,
+      isCircle: Math.random() > 0.7,
+    }));
 
-  //   const tick = () => {
-  //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-  //     let alive = false;
-  //     for (const p of particles) {
-  //       if (p.life <= 0) continue;
-  //       alive = true;
-  //       p.x += p.vx; p.y += p.vy;
-  //       p.vy += p.gravity; p.vx *= 0.985;
-  //       p.rot += p.rotSpeed; p.life -= p.decay;
-  //       ctx.save();
-  //       ctx.globalAlpha = Math.max(0, p.life);
-  //       ctx.fillStyle = p.color;
-  //       ctx.translate(p.x, p.y);
-  //       ctx.rotate((p.rot * Math.PI) / 180);
-  //       if (p.isCircle) { ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2); ctx.fill(); }
-  //       else { ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
-  //       ctx.restore();
-  //     }
-  //     if (alive) rafRef.current = requestAnimationFrame(tick);
-  //   };
-  //   rafRef.current = requestAnimationFrame(tick);
-  //   return () => cancelAnimationFrame(rafRef.current);
-  // }, [active]);
-
-
-
-
-  // Fix this block inside ConfettiBurst useEffect
-
-useEffect(() => {
-  if (!active) return;
-
-  const canvas = canvasRef.current;
-  if (!canvas) return;
-
-  const ctx = canvas.getContext("2d");
-
-  // ✅ Fix for Vercel / TypeScript production build
-  if (!ctx) return;
-
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const cx = canvas.width / 2;
-  const cy = canvas.height * 0.52;
-
-  const particles = Array.from({ length: 140 }, () => ({
-    x: cx + (Math.random() - 0.5) * 60,
-    y: cy,
-    vx: (Math.random() - 0.5) * 20,
-    vy: -(Math.random() * 16 + 5),
-    color: COLORS[Math.floor(Math.random() * COLORS.length)],
-    w: Math.random() * 16 + 6,
-    h: Math.random() > 0.7 ? Math.random() * 16 + 6 : Math.random() * 8 + 3,
-    rot: Math.random() * 360,
-    rotSpeed: (Math.random() - 0.5) * 14,
-    gravity: 0.5,
-    life: 1,
-    decay: Math.random() * 0.013 + 0.007,
-    isCircle: Math.random() > 0.7,
-  }));
-
-  const tick = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    let alive = false;
-
-    for (const p of particles) {
-      if (p.life <= 0) continue;
-
-      alive = true;
-
-      p.x += p.vx;
-      p.y += p.vy;
-      p.vy += p.gravity;
-      p.vx *= 0.985;
-      p.rot += p.rotSpeed;
-      p.life -= p.decay;
-
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, p.life);
-      ctx.fillStyle = p.color;
-      ctx.translate(p.x, p.y);
-      ctx.rotate((p.rot * Math.PI) / 180);
-
-      if (p.isCircle) {
-        ctx.beginPath();
-        ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2);
-        ctx.fill();
-      } else {
-        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+    const tick = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let alive = false;
+      for (const p of particles) {
+        if (p.life <= 0) continue;
+        alive = true;
+        p.x += p.vx; p.y += p.vy;
+        p.vy += p.gravity; p.vx *= 0.985;
+        p.rot += p.rotSpeed; p.life -= p.decay;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.life);
+        ctx.fillStyle = p.color;
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        if (p.isCircle) { ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2); ctx.fill(); }
+        else { ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); }
+        ctx.restore();
       }
+      if (alive) rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [active]);
 
-      ctx.restore();
-    }
-
-    if (alive) {
-      rafRef.current = requestAnimationFrame(tick);
-    }
-  };
-
-  rafRef.current = requestAnimationFrame(tick);
-
-  return () => {
-    if (rafRef.current) cancelAnimationFrame(rafRef.current);
-  };
-}, [active]);
   return (
     <canvas ref={canvasRef} style={{ position:"fixed", inset:0, pointerEvents:"none", zIndex:9999, display: active ? "block" : "none" }} />
   );
@@ -175,95 +93,86 @@ useEffect(() => {
 // ─────────────────────────────────────────────────────────────────────────────
 // SCRATCH CARD
 // ─────────────────────────────────────────────────────────────────────────────
-type ScratchCardProps = {
-  weddingDate?: string;
-  onFullReveal?: () => void;
-};
-type Point = { x: number; y: number };
-function ScratchCard({
-  weddingDate = "25/06/26",
-  onFullReveal,
-}: ScratchCardProps) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-const overlayRef = useRef<HTMLCanvasElement | null>(null);
-const isDrawing = useRef(false);
-const revealed = useRef(false);
-const hasTriggered = useRef(false);
-const lastCheck = useRef(0);
-const pointsQueue = useRef<Point[]>([]);
-const lastPoint = useRef<Point | null>(null);
-const rafPending = useRef(false);
-
+function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
+  const canvasRef    = useRef(null);
+  const overlayRef   = useRef(null);
+  const isDrawing    = useRef(false);
+  const revealed     = useRef(false);
+  const hasTriggered = useRef(false);
+  const lastCheck    = useRef(0);
+  const pointsQueue  = useRef([]);
+  const rafPending   = useRef(false);
+  const lastPoint    = useRef(null);
   const [showDate, setShowDate] = useState(false);
 
   const CW = 640, CH = 320;
 
-  // Replace your buildOverlay function with this Vercel-safe version
+  const buildOverlay = useCallback(() => {
+    const oc = document.createElement("canvas");
+    oc.width = CW; oc.height = CH;
+    const ctx = oc.getContext("2d");
 
-const buildOverlay = useCallback(() => {
-  const oc = document.createElement("canvas");
-  oc.width = CW;
-  oc.height = CH;
+    const grad = ctx.createLinearGradient(0, 0, CW, CH);
+    grad.addColorStop(0,    "#7a5400");
+    grad.addColorStop(0.12, "#e6c231");
+    grad.addColorStop(0.28, "#c9940a");
+    grad.addColorStop(0.45, "#fff0a0");
+    grad.addColorStop(0.6,  "#b8860b");
+    grad.addColorStop(0.78, "#f5d060");
+    grad.addColorStop(1,    "#7a5400");
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, CW, CH);
 
-  const ctx = oc.getContext("2d");
+    for (let y = 0; y < CH; y += 2) {
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.06})`;
+      ctx.lineWidth = 1;
+      ctx.moveTo(0, y); ctx.lineTo(CW, y); ctx.stroke();
+    }
+    for (let i = 0; i < 80; i++) {
+      const x1 = Math.random() * CW, y1 = Math.random() * CH;
+      const len = Math.random() * 40 + 10, angle = (Math.random() - 0.5) * 0.4;
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.12})`;
+      ctx.lineWidth = Math.random() * 1.5 + 0.5;
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x1 + Math.cos(angle) * len, y1 + Math.sin(angle) * len);
+      ctx.stroke();
+    }
 
-  // ✅ Fix TypeScript strict mode
-  if (!ctx) return;
+    const glare = ctx.createLinearGradient(0, 0, CW * 0.6, CH);
+    glare.addColorStop(0, "rgba(255,255,255,0)");
+    glare.addColorStop(0.4, "rgba(255,255,255,0.18)");
+    glare.addColorStop(0.5, "rgba(255,255,255,0.35)");
+    glare.addColorStop(0.6, "rgba(255,255,255,0.18)");
+    glare.addColorStop(1, "rgba(255,255,255,0)");
+    ctx.fillStyle = glare;
+    ctx.fillRect(0, 0, CW, CH);
 
-  const grad = ctx.createLinearGradient(0, 0, CW, CH);
-  grad.addColorStop(0, "#7a5400");
-  grad.addColorStop(0.12, "#e6c231");
-  grad.addColorStop(0.28, "#c9940a");
-  grad.addColorStop(0.45, "#fff0a0");
-  grad.addColorStop(0.6, "#b8860b");
-  grad.addColorStop(0.78, "#f5d060");
-  grad.addColorStop(1, "#7a5400");
+    ctx.strokeStyle = "rgba(255,220,80,0.7)"; ctx.lineWidth = 4;
+    ctx.strokeRect(6, 6, CW - 12, CH - 12);
+    ctx.strokeStyle = "rgba(100,60,0,0.25)"; ctx.lineWidth = 1.5;
+    ctx.strokeRect(12, 12, CW - 24, CH - 24);
 
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, CW, CH);
-
-  for (let y = 0; y < CH; y += 2) {
-    ctx.beginPath();
-    ctx.strokeStyle = `rgba(255,255,255,${Math.random() * 0.06})`;
-    ctx.lineWidth = 1;
-    ctx.moveTo(0, y);
-    ctx.lineTo(CW, y);
-    ctx.stroke();
-  }
-
-  overlayRef.current = oc;
-
-  const vc = canvasRef.current;
-  if (!vc) return;
-
-  const vctx = vc.getContext("2d");
-  if (!vctx) return;
-
-  vctx.drawImage(oc, 0, 0);
-}, []);
+    overlayRef.current = oc;
+    const vc = canvasRef.current;
+    if (vc) vc.getContext("2d").drawImage(oc, 0, 0);
+  }, []);
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
 
-const getPoint = useCallback((
-  e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
-) => {
-  const canvas = canvasRef.current;
-  if (!canvas) return null;
+  const getPoint = useCallback((e) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return null;
+    const rect = canvas.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return {
+      x: ((src.clientX - rect.left) / rect.width) * CW,
+      y: ((src.clientY - rect.top) / rect.height) * CH,
+    };
+  }, []);
 
-  const rect = canvas.getBoundingClientRect();
-
-  const src =
-    "touches" in e
-      ? e.touches[0]
-      : e;
-
-  return {
-    x: ((src.clientX - rect.left) / rect.width) * CW,
-    y: ((src.clientY - rect.top) / rect.height) * CH,
-  };
-}, []);
-
-  const interpolate = (a: Point, b: Point): Point[] => {
+  const interpolate = (a, b) => {
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
     const steps = Math.max(1, Math.ceil(dist / 3));
     return Array.from({ length: steps }, (_, i) => ({
@@ -272,14 +181,9 @@ const getPoint = useCallback((
     }));
   };
 
-  const drawScratch = useCallback((
-  ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number
-) => {
-  ctx.globalCompositeOperation = "destination-out";
-
-  const rg = ctx.createRadialGradient(x, y, 0, x, y, 38);
+  const drawScratch = useCallback((ctx, x, y) => {
+    ctx.globalCompositeOperation = "destination-out";
+    const rg = ctx.createRadialGradient(x, y, 0, x, y, 38);
     rg.addColorStop(0, "rgba(0,0,0,1)");
     rg.addColorStop(0.5, "rgba(0,0,0,0.85)");
     rg.addColorStop(0.8, "rgba(0,0,0,0.4)");
@@ -311,80 +215,42 @@ const getPoint = useCallback((
     ctx.globalCompositeOperation = "source-over";
   }, []);
 
-const flushPoints = useCallback(() => {
-  rafPending.current = false;
+  const flushPoints = useCallback(() => {
+    rafPending.current = false;
+    const canvas = canvasRef.current;
+    if (!canvas || revealed.current) return;
+    const ctx = canvas.getContext("2d");
+    const pts = pointsQueue.current.splice(0);
+    if (!pts.length) return;
+    pts.forEach(pt => drawScratch(ctx, pt.x, pt.y));
 
-  const canvas = canvasRef.current;
-  if (!canvas || revealed.current) return;
-
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
-
-  const pts = pointsQueue.current.splice(0);
-  if (!pts.length) return;
-
-  pts.forEach((pt) => drawScratch(ctx, pt.x, pt.y));
-
-  const now = performance.now();
-
-  if (!hasTriggered.current && now - lastCheck.current > 400) {
-    lastCheck.current = now;
-
-    const data = ctx.getImageData(0, 0, CW, CH).data;
-
-    let transparent = 0;
-    let total = 0;
-
-    for (let i = 3; i < data.length; i += 32) {
-      total++;
-      if (data[i] < 128) transparent++;
-    }
-
-    if (total > 0 && (transparent / total) * 100 > 55) {
-      hasTriggered.current = true;
-      revealed.current = true;
-
-      let alpha = 1;
-
-      const wipe = () => {
-        alpha -= 0.055;
-
-        if (alpha <= 0) {
+    const now = performance.now();
+    if (!hasTriggered.current && now - lastCheck.current > 400) {
+      lastCheck.current = now;
+      const data = ctx.getImageData(0, 0, CW, CH).data;
+      let transparent = 0, total = 0;
+      for (let i = 3; i < data.length; i += 32) { total++; if (data[i] < 128) transparent++; }
+      if (total > 0 && (transparent / total) * 100 > 55) {
+        hasTriggered.current = true; revealed.current = true;
+        let alpha = 1;
+        const wipe = () => {
+          alpha -= 0.055;
+          if (alpha <= 0) { ctx.clearRect(0, 0, CW, CH); setShowDate(true); onFullReveal?.(); return; }
           ctx.clearRect(0, 0, CW, CH);
-          setShowDate(true);
-          onFullReveal?.();
-          return;
-        }
-
-        ctx.clearRect(0, 0, CW, CH);
-
-        if (overlayRef.current) {
-          ctx.globalAlpha = alpha;
-          ctx.drawImage(overlayRef.current, 0, 0);
-          ctx.globalAlpha = 1;
-        }
-
+          if (overlayRef.current) { ctx.globalAlpha = alpha; ctx.drawImage(overlayRef.current, 0, 0); ctx.globalAlpha = 1; }
+          requestAnimationFrame(wipe);
+        };
         requestAnimationFrame(wipe);
-      };
-
-      requestAnimationFrame(wipe);
+      }
     }
-  }
-}, [drawScratch, onFullReveal]);
+  }, [drawScratch, onFullReveal]);
 
-  const onStart = useCallback(
-  (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
-    e.preventDefault();
-    isDrawing.current = true;
+  const onStart = useCallback((e) => {
+    e.preventDefault(); isDrawing.current = true;
+    const pt = getPoint(e); if (pt) lastPoint.current = pt;
+  }, [getPoint]);
 
-    const pt = getPoint(e);
-    if (pt) lastPoint.current = pt;
-  },
-  [getPoint]
-);
-
-  const onMove = useCallback(
-  (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+  const onMove = useCallback((e) => {
     if (!isDrawing.current || revealed.current) return;
     e.preventDefault();
     const pt = getPoint(e); if (!pt) return;
@@ -437,11 +303,11 @@ const flushPoints = useCallback(() => {
 // MAIN COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
 function Open() {
-  const sectionRef          = useRef<HTMLDivElement | null>(null);
-  const section3Ref         =useRef<HTMLDivElement | null>(null);
-  const imageRef            = useRef<HTMLDivElement | null>(null);
-  const section1SentinelRef = useRef<HTMLDivElement | null>(null);
-  const venueRef            = useRef<HTMLDivElement | null>(null);
+  const sectionRef          = useRef(null);
+  const section3Ref         = useRef(null);
+  const imageRef            = useRef(null);
+  const section1SentinelRef = useRef(null);
+  const venueRef            = useRef(null);
 
   const [open, setOpen]                         = useState(false);
   const [envelopeAnimDone, setEnvelopeAnimDone] = useState(false);
@@ -551,36 +417,21 @@ function Open() {
       const rect = sectionRef.current.getBoundingClientRect();
       target = Math.max(0, Math.min((window.innerHeight - rect.top) / window.innerHeight, 1)) * 40;
     };
-  //  let raf: number;
-  //   const animate = () => {
-  //     if (isVis) {
-  //       current += (target - current) * 0.08;
-  //       if (imageRef.current) imageRef.current.style.transform = `translateY(${current}px)`;
-  //     }
-  //     raf = requestAnimationFrame(animate);
-  //   };
-  //   window.addEventListener("scroll", handleScroll, { passive: true });
-  //   animate();
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //     cancelAnimationFrame(raf);
-  //     observer.disconnect();
-  //   };
-  let raf: number | null = null;
-
-const animate = () => {
-  if (isVis) {
-    current += (target - current) * 0.08;
-  }
-
-  raf = requestAnimationFrame(animate);
-};
-
-raf = requestAnimationFrame(animate);
-
-return () => {
-  if (raf !== null) cancelAnimationFrame(raf);
-};
+    let raf;
+    const animate = () => {
+      if (isVis) {
+        current += (target - current) * 0.08;
+        if (imageRef.current) imageRef.current.style.transform = `translateY(${current}px)`;
+      }
+      raf = requestAnimationFrame(animate);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    animate();
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(raf);
+      observer.disconnect();
+    };
   }, []);
 
   // ── AOS
@@ -603,17 +454,18 @@ return () => {
     setTimeout(() => setConfettiActive(false), 3500);
   }, []);
 
-  const fadeUp = (delay: number) => ({
-  opacity: open ? 1 : 0,
-  transform: open ? "translateY(0px)" : "translateY(40px)",
-  transition: "opacity 1s ease, transform 1s ease",
-  transitionDelay: `${delay}s`,
-});
+  const fadeUp = (delay) => ({
+    opacity: open ? 1 : 0,
+    transform: open ? "translateY(0px)" : "translateY(40px)",
+    transition: "opacity 1s ease, transform 1s ease",
+    transitionDelay: `${delay}s`,
+    willChange: "opacity, transform",
+  });
 
   // ── Section 3 scroll
   const section3Start    = section3Top;
   const section3Progress = Math.max(0, Math.min((scrollY - section3Start) / windowHeight, 1));
-  const getSection3Style = (index: number) => {
+  const getSection3Style = (index) => {
     if (scrollY < section3Start) return { transform: "translateY(0px)" };
     if (index === 0) return { transform: `translateY(${-section3Progress * windowHeight}px)`, willChange: "transform" };
     if (index === 1) return { transform: `translateY(${windowHeight - section3Progress * windowHeight}px)`, willChange: "transform" };
@@ -624,7 +476,7 @@ return () => {
 const scrollClamped = Math.max(0, Math.min(scrollY - windowHeight * 3, windowHeight * 4));
 const activeIndex   = Math.floor(scrollClamped / windowHeight);
 const progressVal   = (scrollClamped % windowHeight) / windowHeight;
-const getStyle = (index: number) => {
+const getStyle = (index) => {
   if (index === activeIndex)     return { transform: `translateY(${-progressVal * windowHeight}px)`, willChange: "transform" };
   if (index === activeIndex + 1) return { transform: `translateY(${windowHeight - progressVal * windowHeight}px)`, willChange: "transform" };
   if (index < activeIndex)       return { transform: `translateY(${-windowHeight}px)` };
@@ -964,7 +816,7 @@ if (scrollY >= venueTop) {
       style={{ fontFamily: "'Alice', serif" }}
       data-aos="fade-up"
     >
-      THE WEDDING RECEPTION OF THEIR SON
+      THE WEDDING CELEBRATION OF THEIR SON
     </p>
 
     {/* Groom Name - Alex Brush */}
@@ -1010,7 +862,7 @@ if (scrollY >= venueTop) {
       style={{ fontFamily: "'Alice', serif" }}
       data-aos="fade-up"
     >
-      D/o. Smt. Rekha (Radha) &amp;<br />
+      D/o. Smt. Rekha (Radha) Kabra &amp;<br />
       Shri Sanjay Kabra
     </p>
 
@@ -1053,7 +905,7 @@ if (scrollY >= venueTop) {
                 <div className="scratch-overlay">
                   <p className="scratch-title " style={{ fontFamily: "'Alex Brush', cursive" }}>Reveal</p>
                   <p className="scratch-subtitle">Scratch to discover<br />the wedding date</p>
-                  <ScratchCard weddingDate="25/06/26" onFullReveal={handleScratchReveal} />
+                  <ScratchCard weddingDate="23/06/26" onFullReveal={handleScratchReveal} />
                 </div>
               </div>
             </div>
@@ -1074,7 +926,7 @@ if (scrollY >= venueTop) {
               <div className="sticky top-0 w-full overflow-hidden full-h"
                 style={{ fontFamily: "'Georgia','Times New Roman',serif" }}>
                 <img src="/Pattern_1.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
-                <h2 className=" absolute top-[71px] left-1/2 -translate-x-1/2 text-[#3B2507] text-4xl font-bold z-10" style={{ fontFamily: "'Alice', serif" }}>Events</h2>
+                <h2 className=" absolute top-[108px] left-1/2 -translate-x-1/2 text-[#3B2507] text-4xl font-bold z-10" style={{ fontFamily: "'Alice', serif" }}>Events</h2>
                 {/* <img src="/wedding-11.svg"
                   className="absolute h-[526px] w-full object-contain top-[-172px]"
                   style={{ zIndex: 9 }} alt="" /> */}
@@ -1086,13 +938,13 @@ if (scrollY >= venueTop) {
                       <div className="max-w-[300px] w-full text-center z-10 mt-[18px]">
                         <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>20/06/26</p>
-                        <h2 className="text-[27px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Ganesh & Haldi</h2>
+                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Haldi & <br/> Ganesh Pooja</h2>
                         
                         <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>12 pm</p>
-                        <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gota/Leheriya</p>
-                        <h2 className="text-[27px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mahendi</h2>
+                        {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gota/Leheriya</p> */}
+                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mehendi & <br/> Jamming Baithak</h2>
                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>4.30 pm Onward</p>
-                        <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@Home</p>
+                        <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: Home</p>
                       </div>
                     ),
                   },
@@ -1103,8 +955,9 @@ if (scrollY >= venueTop) {
                        <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Bhilwara</p>
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>22/06/26</p>
                         <h2 className="text-[35px] font-medium text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Sangeet</h2>
-                         <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p>
-                        <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Indo-Western</p>
+                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>7 pm Onward</p>
+                         {/* <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p> */}
+                        {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Indo-Western</p> */}
                         <img src="/Devider 1.svg" className="w-full  p-4" />
                          <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>23/06/26</p>
                         <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
@@ -1113,10 +966,10 @@ if (scrollY >= venueTop) {
 <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
   Pheras <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am</span>
 </span><br />
-<span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
+{/* <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
   Reception <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</span>
-</span>
-                          <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@The Aaureum Resort</p>
+</span> */}
+                          <p className="text-[11px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: The Aaureum Resorts,<br/> Bhilwara, Rajasthan</p>
                       </div>
                     ),
                   },
@@ -1125,12 +978,12 @@ if (scrollY >= venueTop) {
                     node: (
                      <div className="max-w-[300px] w-full text-center z-10 mt-[18px]"style={{lineHeight:"27px"}}>
                         <p className="text-[25px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
-                        <p className="text-[17px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>(Post-Wedding)</p>
+                        {/* <p className="text-[17px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>(Post-Wedding)</p> */}
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>25/06/26</p>
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Myra</h2>
                         
                         <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am- 1pm</p>
-                        <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gujrati vibe</p>
+                        {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gujrati vibe</p> */}
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Reception</h2>
                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>7.30 pm Onward</p>
                         <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@Hotel Center Point, <br></br>Ramdaspeth, Nagpur</p>
@@ -1150,11 +1003,11 @@ if (scrollY >= venueTop) {
               </div>
             </div>
 {/* {section 4.1} */}
-
+{/* <RSVPForm/> */}
             {/* ── SECTION 5 — Venue ── */}
             <div ref={venueRef}
               className="w-full relative flex flex-col items-center justify-center text-center full-h"
-              style={{ fontFamily: "Georgia,'Times New Roman',Times,serif", overflow: "clip" }}>
+              style={{ fontFamily: "Georgia,'Times New Roman',Times,serif", overflow: "clip",background:"#dfd4bc" }}>
               <img src="/Location BG.png" className="absolute inset-0 w-full h-full object-cover"
                 style={{ opacity: 0.7, zIndex: 0 }} alt="" />
               <img src="/location palace.png" className="absolute inset-0 w-full h-full object-cover"
@@ -1203,7 +1056,7 @@ if (scrollY >= venueTop) {
               <img src="/End.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
               {/* <img src="/blue 2.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
               {/* <img src="/blue bottom.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
-              <div className="relative z-10 flex flex-col items-center px-4" style={{ marginTop: "-113px" }}>
+              <div className="relative z-10 flex flex-col items-center px-4" style={{ marginTop: "-29px" }}>
                 <h2 className="text-3xl md:text-4xl  text-[#3B2507] mb-6" data-aos="fade-up" style={{ fontFamily: "'Alex Brush', cursive" }}>
                   The<br />Countdown<br />Begins
                 </h2>
@@ -1211,8 +1064,18 @@ if (scrollY >= venueTop) {
                   data-aos="fade-up">
                   {timeLeft.days}D &nbsp;{timeLeft.hours}H &nbsp;{timeLeft.minutes}M
                 </div>
-                <p className=" text-[#3B2507]  max-w-xs leading-relaxed" data-aos="fade-up">
-                  One love, one promise,<br />one celebration — with you.
+                <p className=" text-[#3B2507] text-[13px]  max-w-xs leading-relaxed" data-aos="fade-up">
+                  One love, one promise,<br />one celebration — 
+                </p>
+                <p className=" text-[#3B2507] text-[13px]  max-w-xs leading-relaxed" data-aos="fade-up">
+                  Your presence and blessings <br></br> mean the most.
+No bouquets <br></br> or gifts please.
+                </p>
+                
+                <p className=" relative font-bold text-[#3B2507] text-[7px]  max-w-xs leading-relaxed top-[47px]" data-aos="fade-up">
+                  Dilip Rathi - 9822233833<br></br>
+                  Dinesh Rathi - 9822470500<br></br>
+                  Jatin Rathi - 9730122800
                 </p>
               </div>
             </div>
