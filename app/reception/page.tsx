@@ -85,7 +85,11 @@ canvas.height = window.innerHeight;
       if (alive) rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafRef.current);
+   return () => {
+  if (rafRef.current !== null) {
+    cancelAnimationFrame(rafRef.current);
+  }
+};
   }, [active]);
 
   return (
@@ -124,7 +128,8 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
   const buildOverlay = useCallback(() => {
     const oc = document.createElement("canvas");
     oc.width = CW; oc.height = CH;
-    const ctx = oc.getContext("2d");
+  const ctx = oc.getContext("2d");
+if (!ctx) return;
 
     const grad = ctx.createLinearGradient(0, 0, CW, CH);
     grad.addColorStop(0,    "#7a5400");
@@ -170,7 +175,12 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
 
     overlayRef.current = oc;
     const vc = canvasRef.current;
-    if (vc) vc.getContext("2d").drawImage(oc, 0, 0);
+    if (vc) {
+  const vctx = vc.getContext("2d");
+  if (vctx) {
+    vctx.drawImage(oc, 0, 0);
+  }
+}
   }, []);
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
@@ -187,7 +197,10 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
     };
   }, []);
 
-  const interpolate = (a, b) => {
+  const interpolate = (
+  a: { x: number; y: number },
+  b: { x: number; y: number }
+) => {
     const dist = Math.hypot(b.x - a.x, b.y - a.y);
     const steps = Math.max(1, Math.ceil(dist / 3));
     return Array.from({ length: steps }, (_, i) => ({
@@ -196,7 +209,11 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
     }));
   };
 
-  const drawScratch = useCallback((ctx, x, y) => {
+ const drawScratch = useCallback((
+  ctx: CanvasRenderingContext2D,
+  x: number,
+  y: number
+) => {
     ctx.globalCompositeOperation = "destination-out";
     const rg = ctx.createRadialGradient(x, y, 0, x, y, 38);
     rg.addColorStop(0, "rgba(0,0,0,1)");
@@ -234,7 +251,8 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
     rafPending.current = false;
     const canvas = canvasRef.current;
     if (!canvas || revealed.current) return;
-    const ctx = canvas.getContext("2d");
+   const ctx = canvas.getContext("2d");
+if (!ctx) return;
     const pts = pointsQueue.current.splice(0);
     if (!pts.length) return;
     pts.forEach(pt => drawScratch(ctx, pt.x, pt.y));
@@ -260,12 +278,16 @@ const lastPoint = useRef<{ x: number; y: number } | null>(null);
     }
   }, [drawScratch, onFullReveal]);
 
-  const onStart = useCallback((e) => {
+ const onStart = useCallback((
+  e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+) => {
     e.preventDefault(); isDrawing.current = true;
     const pt = getPoint(e); if (pt) lastPoint.current = pt;
   }, [getPoint]);
 
-  const onMove = useCallback((e) => {
+const onMove = useCallback((
+  e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>
+) => {
     if (!isDrawing.current || revealed.current) return;
     e.preventDefault();
     const pt = getPoint(e); if (!pt) return;
@@ -411,11 +433,15 @@ const venueRef = useRef<HTMLDivElement | null>(null);
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize, { passive: true });
-    window.visualViewport?.addEventListener("resize", onResize);
+   if (window.visualViewport) {
+  window.visualViewport.addEventListener("resize", onResize);
+}
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
-      window.visualViewport?.removeEventListener("resize", onResize);
+   if (window.visualViewport) {
+  window.visualViewport.removeEventListener("resize", onResize);
+}
     };
   }, []);
 
@@ -432,7 +458,7 @@ const venueRef = useRef<HTMLDivElement | null>(null);
       const rect = sectionRef.current.getBoundingClientRect();
       target = Math.max(0, Math.min((window.innerHeight - rect.top) / window.innerHeight, 1)) * 40;
     };
-    let raf;
+   let raf: number;
     const animate = () => {
       if (isVis) {
         current += (target - current) * 0.08;
@@ -469,7 +495,7 @@ const venueRef = useRef<HTMLDivElement | null>(null);
     setTimeout(() => setConfettiActive(false), 3500);
   }, []);
 
-  const fadeUp = (delay) => ({
+ const fadeUp = (delay: number) => ({
     opacity: open ? 1 : 0,
     transform: open ? "translateY(0px)" : "translateY(40px)",
     transition: "opacity 1s ease, transform 1s ease",
@@ -480,7 +506,7 @@ const venueRef = useRef<HTMLDivElement | null>(null);
   // ── Section 3 scroll
   const section3Start    = section3Top;
   const section3Progress = Math.max(0, Math.min((scrollY - section3Start) / windowHeight, 1));
-  const getSection3Style = (index) => {
+const getSection3Style = (index: number) => {
     if (scrollY < section3Start) return { transform: "translateY(0px)" };
     if (index === 0) return { transform: `translateY(${-section3Progress * windowHeight}px)`, willChange: "transform" };
     if (index === 1) return { transform: `translateY(${windowHeight - section3Progress * windowHeight}px)`, willChange: "transform" };
@@ -491,7 +517,7 @@ const venueRef = useRef<HTMLDivElement | null>(null);
 const scrollClamped = Math.max(0, Math.min(scrollY - windowHeight * 3, windowHeight * 4));
 const activeIndex   = Math.floor(scrollClamped / windowHeight);
 const progressVal   = (scrollClamped % windowHeight) / windowHeight;
-const getStyle = (index) => {
+const getStyle = (index: number) => {
   if (index === activeIndex)     return { transform: `translateY(${-progressVal * windowHeight}px)`, willChange: "transform" };
   if (index === activeIndex + 1) return { transform: `translateY(${windowHeight - progressVal * windowHeight}px)`, willChange: "transform" };
   if (index < activeIndex)       return { transform: `translateY(${-windowHeight}px)` };
