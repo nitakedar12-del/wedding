@@ -38,10 +38,13 @@ const rafRef = useRef<number | null>(null);
   useEffect(() => {
     if (!active) return;
     const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+if (!canvas) return;
+
+const ctx = canvas.getContext("2d");
+if (!ctx) return;
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
     const cx = canvas.width / 2;
     const cy = canvas.height * 0.52;
 
