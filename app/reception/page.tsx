@@ -185,17 +185,49 @@ if (!ctx) return;
 
   useEffect(() => { buildOverlay(); }, [buildOverlay]);
 
- const getPoint = useCallback(
-  (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+//  const getPoint = useCallback(
+//   (e: React.MouseEvent<HTMLCanvasElement> | React.TouchEvent<HTMLCanvasElement>) => {
+//     const canvas = canvasRef.current;
+//     if (!canvas) return null;
+//     const rect = canvas.getBoundingClientRect();
+//     const src = e.touches ? e.touches[0] : e;
+//     return {
+//       x: ((src.clientX - rect.left) / rect.width) * CW,
+//       y: ((src.clientY - rect.top) / rect.height) * CH,
+//     };
+//   }, []);
+
+
+
+const getPoint = useCallback(
+  (
+    e:
+      | React.MouseEvent<HTMLCanvasElement>
+      | React.TouchEvent<HTMLCanvasElement>
+  ) => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
+
     const rect = canvas.getBoundingClientRect();
-    const src = e.touches ? e.touches[0] : e;
+
+    let clientX: number;
+    let clientY: number;
+
+    if ("touches" in e) {
+      clientX = e.touches[0].clientX;
+      clientY = e.touches[0].clientY;
+    } else {
+      clientX = e.clientX;
+      clientY = e.clientY;
+    }
+
     return {
-      x: ((src.clientX - rect.left) / rect.width) * CW,
-      y: ((src.clientY - rect.top) / rect.height) * CH,
+      x: ((clientX - rect.left) / rect.width) * CW,
+      y: ((clientY - rect.top) / rect.height) * CH,
     };
-  }, []);
+  },
+  []
+);
 
   const interpolate = (
   a: { x: number; y: number },
