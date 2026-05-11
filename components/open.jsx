@@ -93,7 +93,7 @@ function ConfettiBurst({ active }) {
 // ─────────────────────────────────────────────────────────────────────────────
 // SCRATCH CARD
 // ─────────────────────────────────────────────────────────────────────────────
-function ScratchCard({ weddingDate = "25/06/26", onFullReveal }) {
+function ScratchCard({ weddingDate = "23/06/26", onFullReveal }) {
   const canvasRef    = useRef(null);
   const overlayRef   = useRef(null);
   const isDrawing    = useRef(false);
@@ -816,7 +816,7 @@ if (scrollY >= venueTop) {
       style={{ fontFamily: "'Alice', serif" }}
       data-aos="fade-up"
     >
-      THE WEDDING RECEPTION OF THEIR SON
+      THE WEDDING CELEBRATION OF THEIR SON
     </p>
 
     {/* Groom Name - Alex Brush */}
@@ -862,7 +862,7 @@ if (scrollY >= venueTop) {
       style={{ fontFamily: "'Alice', serif" }}
       data-aos="fade-up"
     >
-      D/o. Smt. Rekha (Radha) &amp;<br />
+      D/o. Smt. Rekha (Radha) Kabra &amp;<br />
       Shri Sanjay Kabra
     </p>
 
@@ -905,7 +905,7 @@ if (scrollY >= venueTop) {
                 <div className="scratch-overlay">
                   <p className="scratch-title " style={{ fontFamily: "'Alex Brush', cursive" }}>Reveal</p>
                   <p className="scratch-subtitle">Scratch to discover<br />the wedding date</p>
-                  <ScratchCard weddingDate="25/06/26" onFullReveal={handleScratchReveal} />
+                  <ScratchCard weddingDate="23/06/26" onFullReveal={handleScratchReveal} />
                 </div>
               </div>
             </div>
@@ -926,7 +926,7 @@ if (scrollY >= venueTop) {
               <div className="sticky top-0 w-full overflow-hidden full-h"
                 style={{ fontFamily: "'Georgia','Times New Roman',serif" }}>
                 <img src="/Pattern_1.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
-                <h2 className=" absolute top-[71px] left-1/2 -translate-x-1/2 text-[#3B2507] text-4xl font-bold z-10" style={{ fontFamily: "'Alice', serif" }}>Events</h2>
+                <h2 className=" absolute top-[108px] left-1/2 -translate-x-1/2 text-[#3B2507] text-4xl font-bold z-10" style={{ fontFamily: "'Alice', serif" }}>Events</h2>
                 {/* <img src="/wedding-11.svg"
                   className="absolute h-[526px] w-full object-contain top-[-172px]"
                   style={{ zIndex: 9 }} alt="" /> */}
@@ -938,13 +938,13 @@ if (scrollY >= venueTop) {
                       <div className="max-w-[300px] w-full text-center z-10 mt-[18px]">
                         <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>20/06/26</p>
-                        <h2 className="text-[27px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Ganesh & Haldi</h2>
+                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Haldi & <br/> Ganesh Pooja</h2>
                         
                         <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>12 pm</p>
-                        <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gota/Leheriya</p>
-                        <h2 className="text-[27px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mahendi</h2>
+                        {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gota/Leheriya</p> */}
+                        <h2 className="text-[22px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mehendi & <br/> Jamming Baithak</h2>
                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>4.30 pm Onward</p>
-                        <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@Home</p>
+                        <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: Home</p>
                       </div>
                     ),
                   },
@@ -955,8 +955,9 @@ if (scrollY >= venueTop) {
                        <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Bhilwara</p>
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>22/06/26</p>
                         <h2 className="text-[35px] font-medium text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Sangeet</h2>
-                         <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p>
-                        <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Indo-Western</p>
+                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>7 pm Onward</p>
+                         {/* <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p> */}
+                        {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Indo-Western</p> */}
                         <img src="/Devider 1.svg" className="w-full  p-4" />
                          <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>23/06/26</p>
                         <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
@@ -965,10 +966,10 @@ if (scrollY >= venueTop) {
 <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
   Pheras <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am</span>
 </span><br />
-<span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
+{/* <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
   Reception <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</span>
-</span>
-                          <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@The Aaureum Resort</p>
+</span> */}
+                          <p className="text-[11px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: The Aaureum Resorts,<br/> Bhilwara, Rajasthan</p>
                       </div>
                     ),
                   },
@@ -977,12 +978,12 @@ if (scrollY >= venueTop) {
                     node: (
                      <div className="max-w-[300px] w-full text-center z-10 mt-[18px]"style={{lineHeight:"27px"}}>
                         <p className="text-[25px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
-                        <p className="text-[17px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>(Post-Wedding)</p>
+                        {/* <p className="text-[17px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>(Post-Wedding)</p> */}
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>25/06/26</p>
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Myra</h2>
                         
                         <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am- 1pm</p>
-                        <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gujrati vibe</p>
+                        {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gujrati vibe</p> */}
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Reception</h2>
                         <p className="text-[16px] text-[#3B2507]"style={{ fontFamily: "'Alice', serif" }}>7.30 pm Onward</p>
                         <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@Hotel Center Point, <br></br>Ramdaspeth, Nagpur</p>
@@ -1006,7 +1007,7 @@ if (scrollY >= venueTop) {
             {/* ── SECTION 5 — Venue ── */}
             <div ref={venueRef}
               className="w-full relative flex flex-col items-center justify-center text-center full-h"
-              style={{ fontFamily: "Georgia,'Times New Roman',Times,serif", overflow: "clip" }}>
+              style={{ fontFamily: "Georgia,'Times New Roman',Times,serif", overflow: "clip",background:"#dfd4bc" }}>
               <img src="/Location BG.png" className="absolute inset-0 w-full h-full object-cover"
                 style={{ opacity: 0.7, zIndex: 0 }} alt="" />
               <img src="/location palace.png" className="absolute inset-0 w-full h-full object-cover"
@@ -1055,7 +1056,7 @@ if (scrollY >= venueTop) {
               <img src="/End.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
               {/* <img src="/blue 2.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
               {/* <img src="/blue bottom.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
-              <div className="relative z-10 flex flex-col items-center px-4" style={{ marginTop: "-113px" }}>
+              <div className="relative z-10 flex flex-col items-center px-4" style={{ marginTop: "-29px" }}>
                 <h2 className="text-3xl md:text-4xl  text-[#3B2507] mb-6" data-aos="fade-up" style={{ fontFamily: "'Alex Brush', cursive" }}>
                   The<br />Countdown<br />Begins
                 </h2>
@@ -1063,8 +1064,18 @@ if (scrollY >= venueTop) {
                   data-aos="fade-up">
                   {timeLeft.days}D &nbsp;{timeLeft.hours}H &nbsp;{timeLeft.minutes}M
                 </div>
-                <p className=" text-[#3B2507]  max-w-xs leading-relaxed" data-aos="fade-up">
-                  One love, one promise,<br />one celebration — with you.
+                <p className=" text-[#3B2507] text-[13px]  max-w-xs leading-relaxed" data-aos="fade-up">
+                  One love, one promise,<br />one celebration — 
+                </p>
+                <p className=" text-[#3B2507] text-[13px]  max-w-xs leading-relaxed" data-aos="fade-up">
+                  Your presence and blessings <br></br> mean the most.
+No bouquets <br></br> or gifts please.
+                </p>
+                
+                <p className=" relative font-bold text-[#3B2507] text-[7px]  max-w-xs leading-relaxed top-[47px]" data-aos="fade-up">
+                  Dilip Rathi - 9822233833<br></br>
+                  Dinesh Rathi - 9822470500<br></br>
+                  Jatin Rathi - 9730122800
                 </p>
               </div>
             </div>
