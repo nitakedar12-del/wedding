@@ -1299,7 +1299,7 @@ function Open() {
             </div>
 
             {/* ── SECTION 4 — Events ── */}
-            <div className="relative h-[300vh] w-full">
+            <div className="relative h-[400vh] w-full">
               <div className="sticky top-0 w-full overflow-hidden full-h"
                 style={{ fontFamily: "'Georgia','Times New Roman',serif" }}>
                 <img src="/Pattern_1.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
@@ -1374,6 +1374,67 @@ function Open() {
                         <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>@Hotel Center Point, <br></br>Ramdaspeth, Nagpur</p>
                       </div>
                     ),
+                  },
+                   {
+                    // img: "/Window.png",
+                     node: (
+  <div
+    className="max-w-[300px] w-full text-center z-10 mt-[18px]"
+    style={{ lineHeight: "37px" }}
+  >
+    {/* Only heading different */}
+    <p
+      className=" font-normal text-[#3B2507] mb-3"
+      style={{ fontFamily: "'Alex Brush', cursive", fontSize:"31px" }}
+    >
+      Awaiting Your Presence
+    </p>
+
+    {/* Same size + same font family for all below */}
+    <p
+      className="text-[17px] font-medium text-[#3B2507]"
+      style={{ fontFamily: "'Alice', serif" }}
+    >
+      Alka & Dilip Rathi
+    </p>
+
+    <p
+      className="text-[15px] font-medium text-[#3B2507]"
+      style={{ fontFamily: "'Alice', serif" }}
+    >
+      Suvarna & Shailesh Maheshwari
+    </p>
+
+    <p
+      className="text-[17px] font-medium text-[#3B2507]"
+      style={{ fontFamily: "'Alice', serif" }}
+    >
+      Ruchita & Jatin Rathi
+    </p>
+
+    <p
+      className="text-[17px] font-medium text-[#3B2507]"
+      style={{ fontFamily: "'Alice', serif" }}
+    >
+      Siddhi & Manu Kothari
+    </p>
+
+   
+
+    <p
+      className="text-[17px] font-medium text-[#3B2507] mt-2"
+      style={{ fontFamily: "'Alice', serif" }}
+    >
+      Dr. Chetna, Riyana, Aavya
+    </p>
+    <p
+      className="text-[17px] font-medium text-[#3B2507] mt-2"
+      style={{ fontFamily: "'Alice', serif" }}
+    >
+      & Rathi Family
+    </p>
+  </div>
+),
                   },
                 ].map((slide, i) => (
                   <div key={i}
