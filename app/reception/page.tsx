@@ -1237,7 +1237,7 @@ function Open() {
                       style={{ fontFamily: "'Alice', serif" }}
                       data-aos="fade-up"
                     >
-                      D/o. Smt. Rekha (Radha) Kabra &amp;<br />
+                      D/o. Smt. Radha (Rekha) Kabra &amp;<br />
                       Shri Sanjay Kabra
                     </p>
 
@@ -1279,9 +1279,9 @@ function Open() {
 
                 <div className="scratch-overlay">
                   <p className="scratch-title " style={{ fontFamily: "'Alex Brush', cursive" }}>Reveal</p>
-                  <p className="scratch-subtitle">Scratch to discover<br />the wedding date</p>
+                  <p className="scratch-subtitle">Scratch to discover<br />the wedding date at Bhilwara</p>
                   <ScratchCard weddingDate="23/06/26" onFullReveal={handleScratchReveal} />
-                   <p className="scratch-subtitle">Scratch to discover<br />Reception date</p>
+                   <p className="scratch-subtitle">Scratch to discover<br />Reception date at Nagpur</p>
                   <ScratchCard2 weddingDate="25/06/26" onFullReveal={handleScratchReveal} />
                 </div>
               </div>
@@ -1308,7 +1308,8 @@ function Open() {
                   className="absolute h-[526px] w-full object-contain top-[-172px]"
                   style={{ zIndex: 9 }} alt="" /> */}
 
-                {[
+                
+               {[
                   {
                     img: "/Window.png",
                     node: (
@@ -1319,11 +1320,11 @@ function Open() {
                          
                         <h2 className="text-[22px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Haldi & <br /> Ganesh Pooja</h2>
 
-                        <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>12 pm</p>
+                        <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am</p>
                          <img src="/Devider 1.svg" className="w-full  " />
                         {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gota/Leheriya</p> */}
                         <h2 className="text-[22px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Mehendi & <br /> Jamming Baithak</h2>
-                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>4.30 pm onward</p>
+                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>5 pm onward</p>
                          <img src="/Devider 1.svg" className="w-full  " />
                         <p className="text-[16px] text-[#3B2507] " style={{ fontFamily: "'Alice', serif" }}>Venue: Home</p>
                       </div>
@@ -1336,13 +1337,13 @@ function Open() {
                         <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Bhilwara</p>
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>22/06/26</p>
                         <h2 className="text-[35px] font-medium text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Sangeet</h2>
-                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>7 pm Onward</p>
+                        <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>7.30 pm Onward</p>
                         {/* <p className="text-[18px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Evening</p> */}
                         {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Indo-Western</p> */}
                         <img src="/Devider 1.svg" className="w-full  p-4" />
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>23/06/26</p>
                         <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
-                          Barat <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>8 am</span>
+                          Barat <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>8.30 am</span>
                         </span><br />
                         <span className="text-[23px] text-[#3B2507]" style={{ fontFamily: "'Alex Brush', cursive" }}>
                           Pheras <span>-</span> <span className="text-[18px] font-light text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am</span>
@@ -1364,7 +1365,7 @@ function Open() {
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>25/06/26</p>
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-1" style={{ fontFamily: "'Alex Brush', cursive" }}>Myra</h2>
 
-                        <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>10.30 am- 1pm</p>
+                        <p className=" font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>11 am</p>
                         <img src="/Devider 1.svg" className="w-full  " />
                         {/* <p className="text-[12px]  text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Dresscode:Gujrati vibe</p> */}
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Reception</h2>
@@ -1456,10 +1457,10 @@ function Open() {
                   No bouquets <br></br> or gifts please.
                 </p>
 
-                <p className=" relative font-bold text-[#3B2507] text-[7px]  max-w-xs leading-relaxed top-[47px]" data-aos="fade-up">
-                  Dilip Rathi - 9822233833<br></br>
-                  Dinesh Rathi - 9822470500<br></br>
-                  Jatin Rathi - 9730122800
+                <p className=" relative font-bold text-[#3B2507] text-[9px]  max-w-xs leading-relaxed top-[16px]" data-aos="fade-up">
+                  Dilip Rathi - <br></br> 9822233833<br></br>
+                  Dinesh Rathi -<br></br> 9822470500<br></br>
+                  Jatin Rathi - <br></br>9730122800
                 </p>
               </div>
             </div>
