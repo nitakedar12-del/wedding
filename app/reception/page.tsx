@@ -1314,7 +1314,7 @@ function Open() {
                     img: "/Window.png",
                     node: (
                       <div className="max-w-[300px] w-full text-center z-10 mt-[18px]">
-                        <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
+                        <p className="text-[22px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif",paddingBottom: "8px" }}>Nagpur</p>
                         <img src="/Devider 1.svg" className="w-full  " />
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>20/06/26</p>
                          
@@ -1359,7 +1359,7 @@ function Open() {
                     img: "/Window.png",
                     node: (
                       <div className="max-w-[300px] w-full text-center z-10 mt-[18px]" style={{ lineHeight: "27px" }}>
-                        <p className="text-[25px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>Nagpur</p>
+                        <p className="text-[25px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif",paddingBottom: "8px" }}>Nagpur</p>
                         <img src="/Devider 1.svg" className="w-full  " />
                         {/* <p className="text-[17px] font-bold text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>(Post-Wedding)</p> */}
                         <p className="text-[20px] font-medium text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>25/06/26</p>
@@ -1385,14 +1385,14 @@ function Open() {
     {/* Only heading different */}
     <p
       className=" font-normal text-[#3B2507] mb-3"
-      style={{ fontFamily: "'Alex Brush', cursive", fontSize:"31px" }}
+      style={{ fontFamily: "'Alex Brush', cursive", fontSize:"26px" }}
     >
       Awaiting Your Presence
     </p>
 
     {/* Same size + same font family for all below */}
     <p
-      className="text-[17px] font-medium text-[#3B2507]"
+      className="text-[15px] font-medium text-[#3B2507]"
       style={{ fontFamily: "'Alice', serif" }}
     >
       Alka & Dilip Rathi
@@ -1406,14 +1406,14 @@ function Open() {
     </p>
 
     <p
-      className="text-[17px] font-medium text-[#3B2507]"
+      className="text-[15px] font-medium text-[#3B2507]"
       style={{ fontFamily: "'Alice', serif" }}
     >
       Ruchita & Jatin Rathi
     </p>
 
     <p
-      className="text-[17px] font-medium text-[#3B2507]"
+      className="text-[15px] font-medium text-[#3B2507]"
       style={{ fontFamily: "'Alice', serif" }}
     >
       Siddhi & Manu Kothari
@@ -1422,13 +1422,13 @@ function Open() {
    
 
     <p
-      className="text-[17px] font-medium text-[#3B2507] mt-2"
+      className="text-[15px] font-medium text-[#3B2507] mt-2"
       style={{ fontFamily: "'Alice', serif" }}
     >
       Dr. Chetna, Riyana, Aavya
     </p>
     <p
-      className="text-[17px] font-medium text-[#3B2507] mt-2"
+      className="text-[15px] font-medium text-[#3B2507] mt-2"
       style={{ fontFamily: "'Alice', serif" }}
     >
       & Rathi Family
@@ -1437,15 +1437,23 @@ function Open() {
 ),
                   },
                 ].map((slide, i) => (
-                  <div key={i}
-                    className="absolute inset-0 flex items-center justify-center scroll-layer top-[133px]"
-                    style={getStyle(i)}>
-                    <img src={slide.img} className="absolute inset-0 w-full h-full object-cover" alt="" />
-                    <div className="relative flex items-center justify-center w-full h-full px-6">
-                      {slide.node}
-                    </div>
-                  </div>
-                ))}
+  <div
+    key={i}
+    className="absolute inset-0 flex items-center justify-center scroll-layer top-[133px]"
+    style={getStyle(i)}
+  >
+    {slide.img && (
+      <img
+        src={slide.img}
+        className="absolute inset-0 w-full h-full object-cover"
+        alt=""
+      />
+    )}
+    <div className="relative flex items-center justify-center w-full h-full px-6">
+      {slide.node}
+    </div>
+  </div>
+))}
               </div>
             </div>
             {/* {section 4.1} */}
@@ -1502,8 +1510,8 @@ function Open() {
               <img src="/End.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
               {/* <img src="/blue 2.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
               {/* <img src="/blue bottom.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
-              <div className="relative z-10 flex flex-col items-center px-4" style={{ marginTop: "-29px" }}>
-                <h2 className="text-3xl md:text-4xl  text-[#3B2507] mb-6" data-aos="fade-up" style={{ fontFamily: "'Alex Brush', cursive" }}>
+              <div className="relative z-10 flex flex-col items-center px-4">
+                <h2 className="text-3xl md:text-4xl  text-[#3B2507] mb-3" data-aos="fade-up" style={{ fontFamily: "'Alex Brush', cursive" }}>
                   The<br />Countdown<br />Begins
                 </h2>
                 <div className="bg-[#0057d4] text-white px-6 py-2 rounded-full text-lg font-semibold shadow-lg mb-6 tracking-widest"
