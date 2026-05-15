@@ -1371,7 +1371,7 @@ function Open() {
                         <h2 className="text-[30px] font-bold text-[#3B2507] mt-2" style={{ fontFamily: "'Alex Brush', cursive" }}>Reception</h2>
                         <p className="text-[16px] text-[#3B2507]" style={{ fontFamily: "'Alice', serif" }}>7.30 pm Onward</p>
                         <img src="/Devider 1.svg" className="w-full  " />
-                        <p className="text-[16px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: Hotel Center Point, <br></br>Ramdaspeth, Nagpur</p>
+                        <p className="text-[14px] text-[#3B2507] mt-2" style={{ fontFamily: "'Alice', serif" }}>Venue: Hotel Center Point, <br></br>Ramdaspeth, Nagpur</p>
                       </div>
                     ),
                   },
