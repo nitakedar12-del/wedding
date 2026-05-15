@@ -1510,23 +1510,23 @@ function Open() {
               <img src="/End.png" className="absolute inset-0 w-full h-full object-cover" alt="" />
               {/* <img src="/blue 2.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
               {/* <img src="/blue bottom.svg" className="absolute inset-0 w-full h-full object-cover" alt="" /> */}
-              <div className="relative z-10 flex flex-col items-center px-4">
-                <h2 className="text-3xl md:text-4xl  text-[#3B2507] mb-3" data-aos="fade-up" style={{ fontFamily: "'Alex Brush', cursive" }}>
+              <div className="relative z-10 flex flex-col items-center px-2">
+                <h2 className="text-3xl md:text-4xl  text-[#3B2507] " data-aos="fade-up" style={{ fontFamily: "'Alex Brush', cursive" }}>
                   The<br />Countdown<br />Begins
                 </h2>
-                <div className="bg-[#0057d4] text-white px-6 py-2 rounded-full text-lg font-semibold shadow-lg mb-6 tracking-widest"
+                <div className="bg-[#0057d4] text-white px-3 py-1 rounded-full text-lg font-semibold shadow-lg mb-6 tracking-widest"
                   data-aos="fade-up">
                   {timeLeft.days}D &nbsp;{timeLeft.hours}H &nbsp;{timeLeft.minutes}M
                 </div>
                 <p className=" text-[#3B2507] text-[13px]  max-w-xs leading-relaxed" data-aos="fade-up">
-                  One love, one promise,<br />one celebration —
+                  One love, one promise,<br />one celebration — 
                 </p>
                 <p className=" text-[#3B2507] text-[13px]  max-w-xs leading-relaxed" data-aos="fade-up">
                   Your presence and blessings <br></br> mean the most.
                   No bouquets <br></br> or gifts please.
                 </p>
-
-                <p className=" relative font-bold text-[#3B2507] text-[9px]  max-w-xs leading-relaxed top-[16px]" data-aos="fade-up">
+                
+                <p className=" relative  text-[#3B2507] text-[11px]  max-w-xs leading-relaxed top-[8px]" data-aos="fade-up"  >
                   Dilip Rathi - <br></br> 9822233833<br></br>
                   Dinesh Rathi -<br></br> 9822470500<br></br>
                   Jatin Rathi - <br></br>9730122800
