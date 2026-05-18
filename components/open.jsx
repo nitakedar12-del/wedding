@@ -567,7 +567,7 @@ function Open() {
     };
   }, []);
   // ── Countdown
-  const targetDate = new Date("2026-06-25T00:00:00").getTime();
+  const targetDate = new Date("2026-06-20T00:00:00").getTime();
   const getTimeRemaining = useCallback(() => {
     const d = targetDate - Date.now();
     return {
